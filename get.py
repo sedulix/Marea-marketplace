@@ -27,3 +27,10 @@ async def actions(request:Request):
         "actions.html",
         {"request": request}
     )
+
+@app.get("/delivery")
+async def dilivery(request:Request):
+    return templates.TemplateResponse(
+        "dilivery.html",
+        {"request":request}
+    )
