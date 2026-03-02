@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marea — Маркетплейс</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F6F3EE;
+    --white: #FFFFFF;
+    --dark: #18160F;
+    --muted: #8A867C;
+    --accent: #C05C35;
+    --accent-hover: #A84A26;
+    --accent-soft: #F2E5DE;
+    --border: #E3DDD5;
+    --chip-bg: #EEEBE5;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ───── NAV ───── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(246,243,238,.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 23px;
+    font-weight: 600;
+    color: var(--dark);
+    text-decoration: none;
+    letter-spacing: -.3px;
+    flex-shrink: 0;
+  }
+  .logo .dot { color: var(--accent); }
+
+  .search {
+    flex: 1;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0 16px;
+    gap: 10px;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .search:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(192,92,53,.1);
+  }
+  .search svg { color: var(--muted); flex-shrink: 0; }
+  .search input {
+    border: none; background: transparent;
+    font-family: inherit; font-size: 14px; color: var(--dark);
+    width: 100%; height: 42px; outline: none;
+  }
+  .search input::placeholder { color: var(--muted); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+  }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--dark); }
+
+  .nav-icon {
+    position: relative;
+    background: var(--chip-bg);
+    border: none;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--dark);
+    transition: background .2s;
+  }
+  .nav-icon:hover { background: var(--border); }
+
+  .badge {
+    position: absolute;
+    top: -5px; right: -5px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--bg);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 9px 22px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+
+  /* ───── HERO ───── */
+  .hero {
+    max-width: 1280px;
+    margin: 36px auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 18px;
+    height: 340px;
+  }
+
+  .hero-main {
+    background: linear-gradient(130deg, #241C16 0%, #5A3220 60%, #8C4C30 100%);
+    border-radius: 22px;
+    padding: 52px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-main::before {
+    content: '';
+    position: absolute;
+    right: -80px; top: -80px;
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(200,90,50,.4) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-main::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: 280px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,180,80,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.85);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    width: fit-content;
+    margin-bottom: 20px;
+  }
+  .hero-pill span { font-size: 14px; }
+
+  .hero-main h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: #FDF8F4;
+    line-height: 1.18;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-main h1 em {
+    font-style: italic;
+    color: #F5A882;
+  }
+
+  .hero-btn {
+    background: #fff;
+    color: var(--dark);
+    border: none;
+    border-radius: 12px;
+    padding: 13px 28px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+    position: relative;
+    z-index: 1;
+    transition: opacity .2s;
+  }
+  .hero-btn:hover { opacity: .9; }
+
+  .hero-side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .mini-card {
+    flex: 1;
+    border-radius: 18px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform .25s;
+  }
+  .mini-card:hover { transform: scale(1.02); }
+  .mini-card:nth-child(1) { background: linear-gradient(145deg, #E8DDD0, #CDB89A); }
+  .mini-card:nth-child(2) { background: linear-gradient(145deg, #C8D8C8, #9EBCA0); }
+
+  .mini-card-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: rgba(30,20,10,.55);
+    margin-bottom: 4px;
+  }
+  .mini-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #1A140D;
+  }
+
+  .mini-card-arrow {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 30px; height: 30px;
+    background: rgba(255,255,255,.6);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  /* ───── SECTION WRAPPER ───── */
+  .section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px 52px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+
+  .section-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 500;
+  }
+
+  .see-all {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity .2s;
+  }
+  .see-all:hover { opacity: .7; }
+
+  /* ───── CATEGORIES ───── */
+  .cats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .cat-pill {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .cat-pill:hover { border-color: var(--dark); }
+  .cat-pill.active {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: #fff;
+  }
+
+  /* ───── FILTERS BAR ───── */
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .filters-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .chip {
+    background: var(--chip-bg);
+    border: none;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--dark);
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .chip:hover { background: var(--border); }
+  .chip.on {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .sort {
+    margin-left: auto;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--dark);
+    outline: none;
+    cursor: pointer;
+  }
+
+  /* ───── PRODUCT GRID ───── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform .25s, box-shadow .25s;
+    cursor: pointer;
+    animation: fadeUp .5s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:nth-child(1) { animation-delay: .05s; }
+  .card:nth-child(2) { animation-delay: .1s; }
+  .card:nth-child(3) { animation-delay: .15s; }
+  .card:nth-child(4) { animation-delay: .2s; }
+  .card:nth-child(5) { animation-delay: .25s; }
+  .card:nth-child(6) { animation-delay: .3s; }
+  .card:nth-child(7) { animation-delay: .35s; }
+  .card:nth-child(8) { animation-delay: .4s; }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 48px rgba(0,0,0,.09);
+  }
+
+  .card-img {
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    transition: transform .3s;
+  }
+  .card:hover .card-img { transform: scale(1.05); }
+
+  .card-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+
+  .fav {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: rgba(255,255,255,.88);
+    border: none;
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .card:hover .fav { opacity: 1; }
+  .fav.on { opacity: 1; }
+
+  .card-body { padding: 16px; }
+
+  .card-cat {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--dark);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .card-price {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+  .card-old {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: line-through;
+    margin-left: 6px;
+    font-weight: 400;
+  }
+
+  .card-stars {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .card-stars .s { color: #E0A030; letter-spacing: -1px; }
+
+  .add {
+    width: 100%;
+    background: var(--chip-bg);
+    color: var(--dark);
+    border: none;
+    border-radius: 10px;
+    padding: 9px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .add:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* ───── BANNER ───── */
+  .promo-banner {
+    max-width: 1280px;
+    margin: 0 auto 52px;
+    padding: 0 40px;
+  }
+
+  .promo-inner {
+    background: linear-gradient(120deg, #1A3030 0%, #2A5040 100%);
+    border-radius: 22px;
+    padding: 52px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .promo-inner::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 0;
+    width: 400px; height: 100%;
+    background: radial-gradient(circle at 80% 50%, rgba(80,180,120,.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .promo-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 500;
+    color: #EFF8F2;
+    margin-bottom: 10px;
+  }
+  .promo-text p {
+    font-size: 15px;
+    color: rgba(255,255,255,.55);
+    max-width: 360px;
+    line-height: 1.6;
+  }
+
+  .promo-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .promo-btn {
+    background: #5ABF8A;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 32px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .promo-btn:hover { background: #44A872; }
+
+  .promo-note {
+    font-size: 12px;
+    color: rgba(255,255,255,.4);
+  }
+
+  /* ───── FOOTER ───── */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,.45);
+  }
+
+  .footer-grid {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 56px 40px 48px;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .footer-brand .logo { color: #fff; display: block; margin-bottom: 12px; }
+  .footer-brand p {
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 210px;
+  }
+
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.75);
+    margin-bottom: 18px;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 13px;
+    color: rgba(255,255,255,.42);
+    text-decoration: none;
+    margin-bottom: 11px;
+    transition: color .2s;
+  }
+  .footer-col a:hover { color: rgba(255,255,255,.9); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.07);
+    padding: 20px 40px;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-wrap">
+    <a href="#" class="logo">Mare<span class="dot">a</span></a>
+
+    <div class="search">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" placeholder="Искать товары, бренды, категории...">
+    </div>
+
+    <div class="nav-links">
+      <a href="http://127.0.0.1:8000/catalog">Каталог</a>
+      <a href="http://127.0.0.1:8000/actions">Акции</a>
+      <a href="#">Доставка</a>
+    </div>
+
+    <button class="nav-icon" style="margin-left:8px;">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+
+    <button class="nav-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <div class="badge">3</div>
+    </button>
+
+    <button class="btn-primary">Продавать</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-main">
+    <div class="hero-pill"><span>🔥</span> Весенняя распродажа</div>
+    <h1>Найди вещи,<br>которые тебя<br><em>вдохновляют</em></h1>
+    <button class="hero-btn">Смотреть коллекцию →</button>
+  </div>
+
+  <div class="hero-side">
+    <div class="mini-card">
+      <div class="mini-card-arrow">→</div>
+      <div class="mini-card-tag">Новинки</div>
+      <h3>Весенний декор</h3>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-arrow">→</div>
+      <div class="mini-card-tag">До −40%</div>
+      <h3>Электроника</h3>
+    </div>
+  </div>
+</div>
+
+<!-- ── CATEGORIES ── -->
+<div class="section">
+  <div class="section-head">
+    <h2>Категории</h2>
+  </div>
+  <div class="cats">
+    <button class="cat-pill active">Все товары</button>
+    <button class="cat-pill">👗 Одежда</button>
+    <button class="cat-pill">📱 Электроника</button>
+    <button class="cat-pill">🏠 Дом и сад</button>
+    <button class="cat-pill">✨ Красота</button>
+    <button class="cat-pill">📚 Книги</button>
+    <button class="cat-pill">🎮 Игры</button>
+    <button class="cat-pill">🍳 Кухня</button>
+    <button class="cat-pill">🏋️ Спорт</button>
+  </div>
+</div>
+
+<!-- ── PRODUCTS ── -->
+<div class="section">
+  <div class="section-head">
+    <h2>Популярное сейчас</h2>
+    <a href="#" class="see-all">Смотреть все →</a>
+  </div>
+
+  <div class="filters">
+    <span class="filters-label">Фильтр:</span>
+    <button class="chip on">Новинки</button>
+    <button class="chip">До 2 000 ₽</button>
+    <button class="chip">До 5 000 ₽</button>
+    <button class="chip">С доставкой</button>
+    <button class="chip">Есть в наличии</button>
+    <select class="sort">
+      <option>По популярности</option>
+      <option>Сначала дешевле</option>
+      <option>Сначала дороже</option>
+      <option>По рейтингу</option>
+    </select>
+  </div>
+
+  <div class="grid">
+
+    <!-- Card 1 -->
+    <div class="card">
+      <div class="card-img" style="background:#FDE8DC;">
+        <div class="card-badge">−20%</div>
+        <button class="fav">🤍</button>
+        🎧
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Электроника</div>
+        <div class="card-name">Беспроводные наушники Pro</div>
+        <div class="card-row">
+          <div>
+            <span class="card-price">3 490 ₽</span>
+            <span class="card-old">4 350 ₽</span>
+          </div>
+          <div class="card-stars"><span class="s">★★★★★</span> 4.9</div>
+        </div>
+        <button class="add">В корзину</button>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+      <div class="card-img" style="background:#E8F0E0;">
+        <button class="fav on">❤️</button>
+        🪴
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Дом и сад</div>
+        <div class="card-name">Суккулент в керамическом горшке</div>
+        <div class="card-row">
+          <div><span class="card-price">890 ₽</span></div>
+          <div class="card-stars"><span class="s">★★★★☆</span> 4.7</div>
+        </div>
+        <button class="add">В корзину</button>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <div class="card-img" style="background:#EAE4F8;">
+        <div class="card-badge">Хит</div>
+        <button class="fav">🤍</button>
+        👟
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Одежда</div>
+        <div class="card-name">Кроссовки Urban Light</div>
+        <div class="card-row">
+          <div>
+            <span class="card-price">5 200 ₽</span>
+            <span class="card-old">6 800 ₽</span>
+          </div>
+          <div class="card-stars"><span class="s">★★★★★</span> 5.0</div>
+        </div>
+        <button class="add">В корзину</button>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card">
+      <div class="card-img" style="background:#FFF3D8;">
+        <button class="fav">🤍</button>
+        ☕
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Кухня</div>
+        <div class="card-name">Кофемашина Espresso Mini</div>
+        <div class="card-row">
+          <div><span class="card-price">12 990 ₽</span></div>
+          <div class="card-stars"><span class="s">★★★★☆</span> 4.6</div>
+        </div>
+        <button class="add">В корзину</button>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="card">
+      <div class="card-img" style="background:#D8EEF4;">
+        <div class="card-badge">−35%</div>
+        <button class="fav">🤍</button>
+        📷
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Электроника</div>
+        <div class="card-name">Экшн-камера Compact 4K</div>
+        <div class="card-row">
+          <div>
+            <span class="card-price">8 400 ₽</span>
+            <span class="card-old">12 900 ₽</span>
+          </div>
+          <div class="card-stars"><span class="s">★★★★★</span> 4.8</div>
+        </div>
+        <button class="add">В корзину</button>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="card">
+      <div class="card-img" style="background:#F5E6EC;">
+        <button class="fav">🤍</button>
+        🕯️
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Красота</div>
+        <div class="card-name">Аромасвечи «Лаванда»</div>
+        <div class="card-row">
+          <div><span class="card-price">1 290 ₽</span></div>
+          <div class="card-stars"><span class="s">★★★★★</span> 4.9</div>
+        </div>
+        <button class="add">В корзину</button>
+      </div>
+    </div>
+
+    <!-- Card 7 -->
+    <div class="card">
+      <div class="card-img" style="background:#E6EEF8;">
+        <button class="fav on">❤️</button>
+        🎮
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Игры</div>
+        <div class="card-name">Геймпад Wireless Pro</div>
+        <div class="card-row">
+          <div>
+            <span class="card-price">4 199 ₽</span>
+            <span class="card-old">5 500 ₽</span>
+          </div>
+          <div class="card-stars"><span class="s">★★★★☆</span> 4.5</div>
+        </div>
+        <button class="add">В корзину</button>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+    <div class="card">
+      <div class="card-img" style="background:#EEFAF0;">
+        <div class="card-badge">Новинка</div>
+        <button class="fav">🤍</button>
+        📗
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Книги</div>
+        <div class="card-name">«Атомные привычки» Д. Клир</div>
+        <div class="card-row">
+          <div><span class="card-price">749 ₽</span></div>
+          <div class="card-stars"><span class="s">★★★★★</span> 5.0</div>
+        </div>
+        <button class="add">В корзину</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── PROMO BANNER ── -->
+<div class="promo-banner">
+  <div class="promo-inner">
+    <div class="promo-text">
+      <h2>Начни продавать<br>на Marea сегодня</h2>
+      <p>Более 2 миллионов покупателей ждут ваши товары. Регистрация бесплатна — первые 3 месяца без комиссии.</p>
+    </div>
+    <div class="promo-action">
+      <button class="promo-btn">Открыть магазин</button>
+      <span class="promo-note">Бесплатно · Без скрытых платежей</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">Mare<span class="dot">a</span></a>
+      <p>Маркетплейс для тех, кто ценит качество и стиль. Более 500 000 товаров от проверенных продавцов.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Покупателям</h4>
+      <a href="#">Как сделать заказ</a>
+      <a href="#">Доставка и оплата</a>
+      <a href="#">Возврат товара</a>
+      <a href="#">Программа лояльности</a>
+      <a href="#">Помощь</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Продавцам</h4>
+      <a href="#">Начать продавать</a>
+      <a href="#">Тарифы</a>
+      <a href="#">Личный кабинет</a>
+      <a href="#">API для бизнеса</a>
+      <a href="#">Блог продавца</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Компания</h4>
+      <a href="#">О нас</a>
+      <a href="#">Карьера</a>
+      <a href="#">Пресса</a>
+      <a href="#">Условия использования</a>
+      <a href="#">Политика конфиденциальности</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2025 Marea. Все права защищены.</span>
+    <span>Сделано с ❤️ в России</span>
+  </div>
+</footer>
+
+<script>
+  // Category pills toggle
+  document.querySelectorAll('.cat-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Filter chips toggle
+  document.querySelectorAll('.chip').forEach(btn => {
+    btn.addEventListener('click', () => btn.classList.toggle('on'));
+  });
+
+  // Fav toggle
+  document.querySelectorAll('.fav').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      btn.classList.toggle('on');
+      btn.textContent = btn.classList.contains('on') ? '❤️' : '🤍';
+    });
+  });
+
+  // Add to cart
+  document.querySelectorAll('.add').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.textContent = '✓ Добавлено';
+      btn.style.background = 'var(--accent)';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = 'В корзину';
+        btn.style.background = '';
+        btn.style.color = '';
+      }, 1500);
+    });
+  });
+</script>
+
+</body>
+</html>

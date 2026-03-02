@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marea — Акции</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F6F3EE;
+    --white: #FFFFFF;
+    --dark: #18160F;
+    --muted: #8A867C;
+    --accent: #C05C35;
+    --accent-hover: #A84A26;
+    --accent-soft: #F2E5DE;
+    --border: #E3DDD5;
+    --chip-bg: #EEEBE5;
+    --green: #3D9A6A;
+    --green-soft: #E2F4EC;
+    --blue: #3A6EC0;
+    --blue-soft: #E2EBFF;
+    --purple: #7C3AC0;
+    --purple-soft: #EFE2FF;
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(246,243,238,.93); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-wrap {
+    max-width: 1280px; margin: 0 auto; padding: 0 40px;
+    height: 66px; display: flex; align-items: center; gap: 28px;
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: var(--dark); text-decoration: none; flex-shrink: 0; }
+  .logo .dot { color: var(--accent); }
+  .search {
+    flex: 1; max-width: 480px; display: flex; align-items: center;
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 0 16px; gap: 10px; transition: border-color .2s, box-shadow .2s;
+  }
+  .search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(192,92,53,.1); }
+  .search svg { color: var(--muted); flex-shrink: 0; }
+  .search input { border: none; background: transparent; font-family: inherit; font-size: 14px; color: var(--dark); width: 100%; height: 42px; outline: none; }
+  .search input::placeholder { color: var(--muted); }
+  .nav-links { display: flex; align-items: center; gap: 22px; margin-left: auto; }
+  .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--dark); }
+  .nav-links a.active { color: var(--dark); font-weight: 500; }
+  .nav-icon {
+    position: relative; background: var(--chip-bg); border: none; border-radius: 10px;
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--dark); transition: background .2s;
+  }
+  .nav-icon:hover { background: var(--border); }
+  .badge {
+    position: absolute; top: -5px; right: -5px; background: var(--accent); color: #fff;
+    font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg);
+  }
+  .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 9px 22px; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .2s; }
+  .btn-primary:hover { background: var(--accent-hover); }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb { max-width: 1280px; margin: 24px auto 0; padding: 0 40px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .breadcrumb a { color: var(--muted); text-decoration: none; transition: color .2s; }
+  .breadcrumb a:hover { color: var(--dark); }
+  .breadcrumb .sep { opacity: .5; }
+
+  /* ── HERO BANNER ── */
+  .hero-banner {
+    max-width: 1280px; margin: 20px auto 0; padding: 0 40px;
+  }
+  .hero-inner {
+    background: linear-gradient(130deg, #1E1208 0%, #6B2E10 55%, #C05C35 100%);
+    border-radius: 24px; padding: 56px 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .hero-inner::before {
+    content: ''; position: absolute; right: -100px; top: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,180,80,.2) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner::after {
+    content: '🔥'; position: absolute; right: 80px; top: 50%;
+    transform: translateY(-50%); font-size: 140px; opacity: .15;
+    pointer-events: none;
+  }
+  .hero-text { z-index: 1; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+    color: rgba(255,255,255,.9); font-size: 12px; font-weight: 500; letter-spacing: .7px;
+    text-transform: uppercase; padding: 5px 14px; border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .hero-inner h1 { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 500; color: #FDF8F4; line-height: 1.15; margin-bottom: 14px; }
+  .hero-inner h1 em { font-style: italic; color: #F5A882; }
+  .hero-inner p { font-size: 16px; color: rgba(255,255,255,.6); margin-bottom: 30px; max-width: 380px; line-height: 1.6; }
+  .hero-actions { display: flex; align-items: center; gap: 14px; }
+  .hero-btn-white { background: #fff; color: var(--dark); border: none; border-radius: 12px; padding: 13px 28px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity .2s; }
+  .hero-btn-white:hover { opacity: .88; }
+  .hero-btn-ghost { background: rgba(255,255,255,.12); color: #fff; border: 1.5px solid rgba(255,255,255,.25); border-radius: 12px; padding: 12px 24px; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .2s; }
+  .hero-btn-ghost:hover { background: rgba(255,255,255,.2); }
+
+  /* countdown */
+  .countdown { z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; }
+  .countdown-label { font-size: 12px; font-weight: 500; letter-spacing: .7px; text-transform: uppercase; color: rgba(255,255,255,.5); }
+  .countdown-dials { display: flex; align-items: center; gap: 8px; }
+  .dial { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .dial-num { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 10px 14px; font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; color: #fff; min-width: 56px; text-align: center; }
+  .dial-unit { font-size: 10px; font-weight: 500; letter-spacing: .5px; text-transform: uppercase; color: rgba(255,255,255,.4); }
+  .dial-sep { font-size: 24px; color: rgba(255,255,255,.3); margin-bottom: 14px; }
+
+  /* ── SECTION ── */
+  .section { max-width: 1280px; margin: 0 auto; padding: 48px 40px 0; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 22px; }
+  .section-head h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; }
+  .see-all { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .see-all:hover { opacity: .7; }
+
+  /* ── PROMO CARDS (big banners) ── */
+  .promo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  .promo-card {
+    border-radius: 20px; padding: 32px; position: relative; overflow: hidden;
+    cursor: pointer; transition: transform .25s, box-shadow .25s; min-height: 220px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .promo-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.13); }
+  .promo-card .bg-emoji { position: absolute; right: 20px; top: 16px; font-size: 80px; opacity: .25; pointer-events: none; }
+  .promo-card .promo-tag { display: inline-block; background: rgba(255,255,255,.22); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; margin-bottom: 10px; width: fit-content; }
+  .promo-card h3 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 500; color: #fff; line-height: 1.25; margin-bottom: 6px; }
+  .promo-card p { font-size: 13px; color: rgba(255,255,255,.65); margin-bottom: 18px; }
+  .promo-card .promo-btn { background: #fff; border: none; border-radius: 8px; padding: 9px 18px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; width: fit-content; transition: opacity .2s; }
+  .promo-card .promo-btn:hover { opacity: .85; }
+
+  .promo-card.orange { background: linear-gradient(135deg, #8C3A18, #C05C35); }
+  .promo-card.green  { background: linear-gradient(135deg, #1A5C3A, #3D9A6A); }
+  .promo-card.navy   { background: linear-gradient(135deg, #1A2A5C, #3A6EC0); }
+  .promo-card .promo-btn.orange-btn { color: #8C3A18; }
+  .promo-card .promo-btn.green-btn  { color: #1A5C3A; }
+  .promo-card .promo-btn.navy-btn   { color: #1A2A5C; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 26px; }
+  .tab {
+    background: var(--white); border: 1.5px solid var(--border); border-radius: 100px;
+    padding: 8px 20px; font-family: inherit; font-size: 13px; color: var(--dark);
+    cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .tab:hover { border-color: var(--dark); }
+  .tab.active { background: var(--dark); border-color: var(--dark); color: #fff; }
+
+  /* ── DEALS GRID ── */
+  .deals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+
+  .deal-card {
+    background: var(--white); border-radius: 18px; overflow: hidden;
+    border: 1px solid var(--border); cursor: pointer;
+    transition: transform .25s, box-shadow .25s; animation: fadeUp .45s both;
+  }
+  .deal-card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(0,0,0,.09); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .deal-card:nth-child(1){animation-delay:.04s} .deal-card:nth-child(2){animation-delay:.09s}
+  .deal-card:nth-child(3){animation-delay:.14s} .deal-card:nth-child(4){animation-delay:.19s}
+  .deal-card:nth-child(5){animation-delay:.24s} .deal-card:nth-child(6){animation-delay:.29s}
+  .deal-card:nth-child(7){animation-delay:.34s} .deal-card:nth-child(8){animation-delay:.39s}
+
+  .deal-img {
+    aspect-ratio: 1; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; font-size: 72px;
+    transition: transform .3s;
+  }
+  .deal-card:hover .deal-img { transform: scale(1.05); }
+
+  .discount-pill {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
+    padding: 4px 10px; border-radius: 8px;
+  }
+  .fav {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,.88); border: none; border-radius: 50%;
+    width: 34px; height: 34px; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: 0; transition: opacity .2s;
+  }
+  .deal-card:hover .fav { opacity: 1; }
+  .fav.on { opacity: 1; }
+
+  /* progress bar */
+  .stock-bar { margin: 0 16px 0; }
+  .stock-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 5px; }
+  .stock-label .hot { color: var(--accent); font-weight: 600; }
+  .progress { background: var(--chip-bg); border-radius: 100px; height: 5px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), #E8803A); transition: width .5s; }
+
+  .deal-body { padding: 14px 16px 16px; }
+  .deal-cat { font-size: 11px; font-weight: 500; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .deal-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 500; color: var(--dark); margin-bottom: 10px; line-height: 1.3; }
+  .deal-prices { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+  .deal-price { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .deal-old { font-size: 14px; color: var(--muted); text-decoration: line-through; }
+  .deal-save { font-size: 12px; color: var(--green); font-weight: 600; background: var(--green-soft); padding: 2px 7px; border-radius: 6px; }
+  .add {
+    width: 100%; background: var(--chip-bg); color: var(--dark); border: none;
+    border-radius: 10px; padding: 9px; font-family: inherit; font-size: 13px;
+    font-weight: 500; cursor: pointer; transition: background .2s, color .2s;
+  }
+  .add:hover { background: var(--accent); color: #fff; }
+
+  /* ── COUPON BLOCK ── */
+  .coupons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  .coupon {
+    background: var(--white); border: 1.5px dashed var(--border); border-radius: 18px;
+    padding: 24px 28px; display: flex; align-items: center; gap: 20px;
+    cursor: pointer; transition: border-color .2s, box-shadow .2s;
+  }
+  .coupon:hover { border-color: var(--accent); box-shadow: 0 8px 24px rgba(192,92,53,.1); }
+  .coupon-icon { font-size: 36px; flex-shrink: 0; }
+  .coupon-body { flex: 1; }
+  .coupon-code { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; letter-spacing: 1px; color: var(--accent); margin-bottom: 4px; }
+  .coupon-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .coupon-copy {
+    background: var(--accent-soft); color: var(--accent); border: none;
+    border-radius: 8px; padding: 7px 14px; font-family: inherit; font-size: 12px;
+    font-weight: 600; cursor: pointer; flex-shrink: 0; transition: background .2s;
+    white-space: nowrap;
+  }
+  .coupon-copy:hover { background: var(--accent); color: #fff; }
+
+  /* ── CATEGORY SALE STRIPS ── */
+  .strips { display: flex; flex-direction: column; gap: 14px; }
+
+  .strip {
+    background: var(--white); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px 28px; display: flex; align-items: center; gap: 20px;
+    cursor: pointer; transition: box-shadow .2s, transform .2s;
+  }
+  .strip:hover { transform: translateX(4px); box-shadow: 0 6px 20px rgba(0,0,0,.07); }
+  .strip-emoji { font-size: 32px; flex-shrink: 0; }
+  .strip-info { flex: 1; }
+  .strip-name { font-size: 16px; font-weight: 500; margin-bottom: 2px; }
+  .strip-sub { font-size: 13px; color: var(--muted); }
+  .strip-badge { background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 100px; flex-shrink: 0; }
+  .strip-arrow { color: var(--muted); font-size: 20px; flex-shrink: 0; }
+
+  /* ── BOTTOM PADDING ── */
+  .pb { padding-bottom: 64px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-wrap">
+    <a href="/" class="logo">Mare<span class="dot">a</span></a>
+    <div class="search">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" placeholder="Искать акции и товары...">
+    </div>
+    <div class="nav-links">
+      <a href="/">Главная</a>
+      <a href="http://127.0.0.1:8000/catalog">Каталог</a>
+      <a href="#" class="active">Акции</a>
+      <a href="#">Доставка</a>
+    </div>
+    <button class="nav-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+    <button class="nav-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <div class="badge">3</div>
+    </button>
+    <button class="btn-primary">Продавать</button>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#">Главная</a><span class="sep">›</span>
+  <span style="color:var(--dark)">Акции</span>
+</div>
+
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">🔥 Горячие предложения</div>
+      <h1>Весенняя<br><em>распродажа</em></h1>
+      <p>Скидки до 70% на тысячи товаров. Только до конца недели — не упусти шанс!</p>
+      <div class="hero-actions">
+        <button class="hero-btn-white">Смотреть товары</button>
+        <button class="hero-btn-ghost">Все акции</button>
+      </div>
+    </div>
+    <div class="countdown">
+      <div class="countdown-label">До конца акции</div>
+      <div class="countdown-dials">
+        <div class="dial">
+          <div class="dial-num" id="cd-h">08</div>
+          <div class="dial-unit">часов</div>
+        </div>
+        <div class="dial-sep">:</div>
+        <div class="dial">
+          <div class="dial-num" id="cd-m">34</div>
+          <div class="dial-unit">минут</div>
+        </div>
+        <div class="dial-sep">:</div>
+        <div class="dial">
+          <div class="dial-num" id="cd-s">17</div>
+          <div class="dial-unit">секунд</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMO CARDS -->
+<div class="section">
+  <div class="section-head">
+    <h2>Специальные предложения</h2>
+  </div>
+  <div class="promo-grid">
+    <div class="promo-card orange">
+      <div class="bg-emoji">🎧</div>
+      <div class="promo-tag">До −50%</div>
+      <h3>Электроника<br>со скидкой</h3>
+      <p>Гаджеты, наушники, камеры</p>
+      <button class="promo-btn orange-btn">Перейти →</button>
+    </div>
+    <div class="promo-card green">
+      <div class="bg-emoji">👗</div>
+      <div class="promo-tag">Новая коллекция</div>
+      <h3>Весенняя<br>мода</h3>
+      <p>Одежда и аксессуары</p>
+      <button class="promo-btn green-btn">Перейти →</button>
+    </div>
+    <div class="promo-card navy">
+      <div class="bg-emoji">🏠</div>
+      <div class="promo-tag">Скидки до −40%</div>
+      <h3>Уют дома<br>дешевле</h3>
+      <p>Декор, растения, текстиль</p>
+      <button class="promo-btn navy-btn">Перейти →</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOT DEALS -->
+<div class="section">
+  <div class="section-head">
+    <h2>Товары дня 🔥</h2>
+    <a href="#" class="see-all">Все скидки →</a>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" onclick="setTab(this)">Все</button>
+    <button class="tab" onclick="setTab(this)">Электроника</button>
+    <button class="tab" onclick="setTab(this)">Одежда</button>
+    <button class="tab" onclick="setTab(this)">Дом и сад</button>
+    <button class="tab" onclick="setTab(this)">Красота</button>
+    <button class="tab" onclick="setTab(this)">Кухня</button>
+  </div>
+
+  <div class="deals-grid">
+
+    <div class="deal-card">
+      <div class="deal-img" style="background:#FDE8DC;">
+        <div class="discount-pill">−20%</div>
+        <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+        🎧
+      </div>
+      <div class="stock-bar" style="padding:10px 16px 0;">
+        <div class="stock-label"><span class="hot">🔥 Разбирают</span><span>осталось 12 шт.</span></div>
+        <div class="progress"><div class="progress-fill" style="width:78%"></div></div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">Электроника</div>
+        <div class="deal-name">Беспроводные наушники Pro</div>
+        <div class="deal-prices">
+          <span class="deal-price">3 490 ₽</span>
+          <span class="deal-old">4 350 ₽</span>
+          <span class="deal-save">−860 ₽</span>
+        </div>
+        <button class="add" onclick="addToCart(event,this)">В корзину</button>
+      </div>
+    </div>
+
+    <div class="deal-card">
+      <div class="deal-img" style="background:#EAE4F8;">
+        <div class="discount-pill">−23%</div>
+        <button class="fav on" onclick="toggleFav(event,this)">❤️</button>
+        👟
+      </div>
+      <div class="stock-bar" style="padding:10px 16px 0;">
+        <div class="stock-label"><span class="hot">🔥 Последние</span><span>осталось 4 шт.</span></div>
+        <div class="progress"><div class="progress-fill" style="width:92%"></div></div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">Одежда</div>
+        <div class="deal-name">Кроссовки Urban Light</div>
+        <div class="deal-prices">
+          <span class="deal-price">5 200 ₽</span>
+          <span class="deal-old">6 800 ₽</span>
+          <span class="deal-save">−1 600 ₽</span>
+        </div>
+        <button class="add" onclick="addToCart(event,this)">В корзину</button>
+      </div>
+    </div>
+
+    <div class="deal-card">
+      <div class="deal-img" style="background:#D8EEF4;">
+        <div class="discount-pill">−35%</div>
+        <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+        📷
+      </div>
+      <div class="stock-bar" style="padding:10px 16px 0;">
+        <div class="stock-label"><span>В наличии</span><span>осталось 28 шт.</span></div>
+        <div class="progress"><div class="progress-fill" style="width:44%"></div></div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">Электроника</div>
+        <div class="deal-name">Экшн-камера Compact 4K</div>
+        <div class="deal-prices">
+          <span class="deal-price">8 400 ₽</span>
+          <span class="deal-old">12 900 ₽</span>
+          <span class="deal-save">−4 500 ₽</span>
+        </div>
+        <button class="add" onclick="addToCart(event,this)">В корзину</button>
+      </div>
+    </div>
+
+    <div class="deal-card">
+      <div class="deal-img" style="background:#F5E6EC;">
+        <div class="discount-pill">−30%</div>
+        <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+        🕯️
+      </div>
+      <div class="stock-bar" style="padding:10px 16px 0;">
+        <div class="stock-label"><span class="hot">🔥 Хит продаж</span><span>осталось 7 шт.</span></div>
+        <div class="progress"><div class="progress-fill" style="width:85%"></div></div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">Красота</div>
+        <div class="deal-name">Аромасвечи «Лаванда»</div>
+        <div class="deal-prices">
+          <span class="deal-price">899 ₽</span>
+          <span class="deal-old">1 290 ₽</span>
+          <span class="deal-save">−391 ₽</span>
+        </div>
+        <button class="add" onclick="addToCart(event,this)">В корзину</button>
+      </div>
+    </div>
+
+    <div class="deal-card">
+      <div class="deal-img" style="background:#FFF3D8;">
+        <div class="discount-pill">−15%</div>
+        <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+        ☕
+      </div>
+      <div class="stock-bar" style="padding:10px 16px 0;">
+        <div class="stock-label"><span>В наличии</span><span>осталось 19 шт.</span></div>
+        <div class="progress"><div class="progress-fill" style="width:35%"></div></div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">Кухня</div>
+        <div class="deal-name">Кофемашина Espresso Mini</div>
+        <div class="deal-prices">
+          <span class="deal-price">11 040 ₽</span>
+          <span class="deal-old">12 990 ₽</span>
+          <span class="deal-save">−1 950 ₽</span>
+        </div>
+        <button class="add" onclick="addToCart(event,this)">В корзину</button>
+      </div>
+    </div>
+
+    <div class="deal-card">
+      <div class="deal-img" style="background:#E8F0E0;">
+        <div class="discount-pill">−40%</div>
+        <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+        🪴
+      </div>
+      <div class="stock-bar" style="padding:10px 16px 0;">
+        <div class="stock-label"><span class="hot">🔥 Разбирают</span><span>осталось 5 шт.</span></div>
+        <div class="progress"><div class="progress-fill" style="width:88%"></div></div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">Дом и сад</div>
+        <div class="deal-name">Суккулент в керамическом горшке</div>
+        <div class="deal-prices">
+          <span class="deal-price">534 ₽</span>
+          <span class="deal-old">890 ₽</span>
+          <span class="deal-save">−356 ₽</span>
+        </div>
+        <button class="add" onclick="addToCart(event,this)">В корзину</button>
+      </div>
+    </div>
+
+    <div class="deal-card">
+      <div class="deal-img" style="background:#E6EEF8;">
+        <div class="discount-pill">−24%</div>
+        <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+        🎮
+      </div>
+      <div class="stock-bar" style="padding:10px 16px 0;">
+        <div class="stock-label"><span>В наличии</span><span>осталось 22 шт.</span></div>
+        <div class="progress"><div class="progress-fill" style="width:52%"></div></div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">Игры</div>
+        <div class="deal-name">Геймпад Wireless Pro</div>
+        <div class="deal-prices">
+          <span class="deal-price">4 199 ₽</span>
+          <span class="deal-old">5 500 ₽</span>
+          <span class="deal-save">−1 301 ₽</span>
+        </div>
+        <button class="add" onclick="addToCart(event,this)">В корзину</button>
+      </div>
+    </div>
+
+    <div class="deal-card">
+      <div class="deal-img" style="background:#EEFAF0;">
+        <div class="discount-pill">−25%</div>
+        <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+        📗
+      </div>
+      <div class="stock-bar" style="padding:10px 16px 0;">
+        <div class="stock-label"><span class="hot">🔥 Популярное</span><span>осталось 9 шт.</span></div>
+        <div class="progress"><div class="progress-fill" style="width:70%"></div></div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">Книги</div>
+        <div class="deal-name">«Атомные привычки» Д. Клир</div>
+        <div class="deal-prices">
+          <span class="deal-price">562 ₽</span>
+          <span class="deal-old">749 ₽</span>
+          <span class="deal-save">−187 ₽</span>
+        </div>
+        <button class="add" onclick="addToCart(event,this)">В корзину</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COUPONS -->
+<div class="section">
+  <div class="section-head">
+    <h2>Промокоды 🎁</h2>
+  </div>
+  <div class="coupons">
+    <div class="coupon">
+      <div class="coupon-icon">🛍️</div>
+      <div class="coupon-body">
+        <div class="coupon-code">SPRING15</div>
+        <div class="coupon-desc">−15% на первый заказ<br>Действует до 31 марта</div>
+      </div>
+      <button class="coupon-copy" onclick="copyCoupon(this,'SPRING15')">Скопировать</button>
+    </div>
+    <div class="coupon">
+      <div class="coupon-icon">⚡</div>
+      <div class="coupon-body">
+        <div class="coupon-code">TECH500</div>
+        <div class="coupon-desc">−500 ₽ на электронику<br>От 5 000 ₽</div>
+      </div>
+      <button class="coupon-copy" onclick="copyCoupon(this,'TECH500')">Скопировать</button>
+    </div>
+    <div class="coupon">
+      <div class="coupon-icon">🚚</div>
+      <div class="coupon-body">
+        <div class="coupon-code">FREEDEL</div>
+        <div class="coupon-desc">Бесплатная доставка<br>На любой заказ</div>
+      </div>
+      <button class="coupon-copy" onclick="copyCoupon(this,'FREEDEL')">Скопировать</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY SALES -->
+<div class="section pb">
+  <div class="section-head">
+    <h2>Скидки по категориям</h2>
+  </div>
+  <div class="strips">
+    <div class="strip">
+      <div class="strip-emoji">📱</div>
+      <div class="strip-info">
+        <div class="strip-name">Электроника</div>
+        <div class="strip-sub">127 товаров со скидкой · Заканчивается через 2 дня</div>
+      </div>
+      <div class="strip-badge">до −50%</div>
+      <div class="strip-arrow">›</div>
+    </div>
+    <div class="strip">
+      <div class="strip-emoji">👗</div>
+      <div class="strip-info">
+        <div class="strip-name">Одежда и обувь</div>
+        <div class="strip-sub">84 товара со скидкой · Весенняя коллекция</div>
+      </div>
+      <div class="strip-badge">до −40%</div>
+      <div class="strip-arrow">›</div>
+    </div>
+    <div class="strip">
+      <div class="strip-emoji">🏠</div>
+      <div class="strip-info">
+        <div class="strip-name">Дом и сад</div>
+        <div class="strip-sub">63 товара со скидкой · Обновление интерьера</div>
+      </div>
+      <div class="strip-badge">до −35%</div>
+      <div class="strip-arrow">›</div>
+    </div>
+    <div class="strip">
+      <div class="strip-emoji">✨</div>
+      <div class="strip-info">
+        <div class="strip-name">Красота и уход</div>
+        <div class="strip-sub">45 товаров со скидкой · Только сегодня</div>
+      </div>
+      <div class="strip-badge">до −30%</div>
+      <div class="strip-arrow">›</div>
+    </div>
+    <div class="strip">
+      <div class="strip-emoji">🍳</div>
+      <div class="strip-info">
+        <div class="strip-name">Кухня</div>
+        <div class="strip-sub">38 товаров со скидкой · Лучшие бренды</div>
+      </div>
+      <div class="strip-badge">до −25%</div>
+      <div class="strip-arrow">›</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Countdown timer
+  let total = 8 * 3600 + 34 * 60 + 17;
+  function tick() {
+    if (total <= 0) return;
+    total--;
+    const h = String(Math.floor(total / 3600)).padStart(2,'0');
+    const m = String(Math.floor((total % 3600) / 60)).padStart(2,'0');
+    const s = String(total % 60).padStart(2,'0');
+    document.getElementById('cd-h').textContent = h;
+    document.getElementById('cd-m').textContent = m;
+    document.getElementById('cd-s').textContent = s;
+  }
+  setInterval(tick, 1000);
+
+  // Tabs
+  function setTab(btn) {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Fav
+  function toggleFav(e, btn) {
+    e.stopPropagation();
+    btn.classList.toggle('on');
+    btn.textContent = btn.classList.contains('on') ? '❤️' : '🤍';
+  }
+
+  // Cart
+  function addToCart(e, btn) {
+    e.stopPropagation();
+    btn.textContent = '✓ Добавлено';
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = 'В корзину';
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1500);
+  }
+
+  // Copy coupon
+  function copyCoupon(btn, code) {
+    navigator.clipboard.writeText(code).catch(() => {});
+    btn.textContent = '✓ Скопировано!';
+    btn.style.background = 'var(--green)';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = 'Скопировать';
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 2000);
+  }
+</script>
+
+</body>
+</html>
