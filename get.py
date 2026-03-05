@@ -45,7 +45,7 @@ async def actions(request:Request):
 
 
 @app.get("/delivery")
-async def dilivery(request:Request):
+async def delivery(request:Request):
     return templates.TemplateResponse(
         "delivery.html",
         {"request":request}
