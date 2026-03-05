@@ -1,10 +1,23 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
+from sqlalchemy.orm import Session
+
+from data import SessionLocal, Tovari
+from Schemas import Tovar
 
 
 app = FastAPI()
 templates = Jinja2Templates(directory="frontend")
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+
+    finally:
+        db.close()
 
 
 @app.get("/")
@@ -32,9 +45,28 @@ async def actions(request:Request):
 
 
 @app.get("/delivery")
-async def dilivery(request:Request):
+async def delivery(request:Request):
     return templates.TemplateResponse(
         "delivery.html",
         {"request":request}
     )
+
+
+@app.get("/sell")
+async def sel(request:Request):
+    return templates.TemplateResponse(
+        "sell.html",
+        {"request":request}
+    )
+
+
+@app.post("/sell")
+async def sell(tovar:Tovar,db: Session = Depends(get_db)):
+    new_tovar = Tovari(name=tovar.name,desc=tovar.description)
+    db.add(new_tovar)
+    db.commit()
+    db.refresh(new_tovar)
+
+    return new_tovar
+
 
