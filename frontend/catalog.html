@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marea — Каталог</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F6F3EE;
+    --white: #FFFFFF;
+    --dark: #18160F;
+    --muted: #8A867C;
+    --accent: #C05C35;
+    --accent-hover: #A84A26;
+    --accent-soft: #F2E5DE;
+    --border: #E3DDD5;
+    --chip-bg: #EEEBE5;
+  }
+
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(246,243,238,.93);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-wrap {
+    max-width: 1280px; margin: 0 auto; padding: 0 40px;
+    height: 66px; display: flex; align-items: center; gap: 28px;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600;
+    color: var(--dark); text-decoration: none; flex-shrink: 0;
+  }
+  .logo .dot { color: var(--accent); }
+  .search {
+    flex: 1; max-width: 480px; display: flex; align-items: center;
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 0 16px; gap: 10px; transition: border-color .2s, box-shadow .2s;
+  }
+  .search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(192,92,53,.1); }
+  .search svg { color: var(--muted); flex-shrink: 0; }
+  .search input {
+    border: none; background: transparent; font-family: inherit;
+    font-size: 14px; color: var(--dark); width: 100%; height: 42px; outline: none;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .nav-links { display: flex; align-items: center; gap: 22px; margin-left: auto; }
+  .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--dark); }
+  .nav-links a.active { color: var(--dark); font-weight: 500; }
+  .nav-icon {
+    position: relative; background: var(--chip-bg); border: none;
+    border-radius: 10px; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--dark); transition: background .2s;
+  }
+  .nav-icon:hover { background: var(--border); }
+  .badge {
+    position: absolute; top: -5px; right: -5px; background: var(--accent);
+    color: #fff; font-size: 10px; font-weight: 700;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg);
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 9px 22px; font-family: inherit; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background .2s;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    max-width: 1280px; margin: 24px auto 0; padding: 0 40px;
+    display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted);
+  }
+  .breadcrumb a { color: var(--muted); text-decoration: none; transition: color .2s; }
+  .breadcrumb a:hover { color: var(--dark); }
+  .breadcrumb span { opacity: .5; }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    max-width: 1280px; margin: 16px auto 28px; padding: 0 40px;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .page-header h1 { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 500; }
+  .page-header p { font-size: 14px; color: var(--muted); }
+
+  /* ── LAYOUT ── */
+  .catalog-wrap {
+    max-width: 1280px; margin: 0 auto; padding: 0 40px 60px;
+    display: grid; grid-template-columns: 256px 1fr; gap: 32px;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { flex-shrink: 0; }
+  .filter-block { margin-bottom: 26px; }
+  .filter-block-title {
+    font-size: 11px; font-weight: 600; letter-spacing: .8px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 13px;
+  }
+
+  .cat-list { display: flex; flex-direction: column; gap: 2px; }
+  .cat-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; border-radius: 10px; cursor: pointer;
+    font-size: 14px; color: var(--dark); transition: background .18s;
+    border: none; background: none; font-family: inherit; width: 100%; text-align: left;
+  }
+  .cat-item:hover { background: var(--chip-bg); }
+  .cat-item.active { background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+  .cat-count {
+    font-size: 11px; color: var(--muted); background: var(--chip-bg);
+    padding: 2px 7px; border-radius: 100px;
+  }
+  .cat-item.active .cat-count { background: rgba(192,92,53,.15); color: var(--accent); }
+
+  .price-inputs { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .price-input {
+    flex: 1; border: 1.5px solid var(--border); background: var(--white);
+    border-radius: 8px; padding: 8px 12px; font-family: inherit;
+    font-size: 13px; color: var(--dark); outline: none; transition: border-color .2s;
+  }
+  .price-input:focus { border-color: var(--accent); }
+  .price-dash { color: var(--muted); font-size: 13px; }
+  .range-slider { width: 100%; accent-color: var(--accent); cursor: pointer; }
+
+  .check-list { display: flex; flex-direction: column; gap: 10px; }
+  .check-item { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; }
+  .check-item input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+
+  .rating-list { display: flex; flex-direction: column; gap: 4px; }
+  .rating-row {
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    padding: 7px 10px; border-radius: 8px; transition: background .18s;
+    border: none; background: none; font-family: inherit; width: 100%;
+  }
+  .rating-row:hover { background: var(--chip-bg); }
+  .rating-row.active { background: var(--accent-soft); }
+  .s { color: #E0A030; letter-spacing: -1px; }
+  .rating-label { font-size: 13px; color: var(--muted); }
+
+  .reset-btn {
+    width: 100%; background: none; border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 9px; font-family: inherit; font-size: 13px;
+    color: var(--muted); cursor: pointer; transition: all .2s; margin-top: 4px;
+  }
+  .reset-btn:hover { border-color: var(--dark); color: var(--dark); }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+  /* ── MAIN ── */
+  .main { min-width: 0; }
+
+  .toolbar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 22px; flex-wrap: wrap;
+  }
+  .active-filters { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex: 1; }
+  .active-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-soft); color: var(--accent);
+    border-radius: 100px; padding: 5px 12px; font-size: 12px; font-weight: 500;
+    cursor: pointer; border: none; font-family: inherit; transition: opacity .2s;
+  }
+  .active-tag:hover { opacity: .7; }
+  .results-count { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .sort-wrap { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .sort-label { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .sort-select {
+    border: 1.5px solid var(--border); background: var(--white);
+    border-radius: 8px; padding: 7px 12px; font-family: inherit;
+    font-size: 13px; color: var(--dark); outline: none; cursor: pointer;
+  }
+  .view-btns { display: flex; gap: 4px; }
+  .view-btn {
+    background: var(--chip-bg); border: none; border-radius: 8px;
+    width: 34px; height: 34px; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; color: var(--muted); transition: all .2s;
+  }
+  .view-btn.active { background: var(--dark); color: #fff; }
+
+  /* ── GRID ── */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .grid.list-view { grid-template-columns: 1fr; }
+
+  .card {
+    background: var(--white); border-radius: 18px; overflow: hidden;
+    border: 1px solid var(--border); transition: transform .25s, box-shadow .25s;
+    cursor: pointer; animation: fadeUp .45s both;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(0,0,0,.09); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card:nth-child(1){animation-delay:.04s} .card:nth-child(2){animation-delay:.08s}
+  .card:nth-child(3){animation-delay:.12s} .card:nth-child(4){animation-delay:.16s}
+  .card:nth-child(5){animation-delay:.20s} .card:nth-child(6){animation-delay:.24s}
+  .card:nth-child(7){animation-delay:.28s} .card:nth-child(8){animation-delay:.32s}
+  .card:nth-child(9){animation-delay:.36s}
+
+  .card-img {
+    aspect-ratio: 1; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 72px; transition: transform .3s;
+  }
+  .card:hover .card-img { transform: scale(1.04); }
+
+  .card-badge {
+    position: absolute; top: 12px; left: 12px; background: var(--accent);
+    color: #fff; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px;
+  }
+  .card-badge.new-badge { background: #3D9A6A; }
+
+  .fav {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,.88); border: none; border-radius: 50%;
+    width: 34px; height: 34px; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: 0; transition: opacity .2s;
+  }
+  .card:hover .fav { opacity: 1; }
+  .fav.on { opacity: 1; }
+
+  .card-body { padding: 16px; }
+  .card-cat { font-size: 11px; font-weight: 500; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+  .card-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 500; color: var(--dark); margin-bottom: 10px; line-height: 1.3; }
+  .card-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .card-price { font-size: 18px; font-weight: 600; }
+  .card-old { font-size: 12px; color: var(--muted); text-decoration: line-through; margin-left: 5px; font-weight: 400; }
+  .card-stars { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 3px; }
+
+  .add {
+    width: 100%; background: var(--chip-bg); color: var(--dark); border: none;
+    border-radius: 10px; padding: 9px; font-family: inherit; font-size: 13px;
+    font-weight: 500; cursor: pointer; transition: background .2s, color .2s;
+  }
+  .add:hover { background: var(--accent); color: #fff; }
+
+  /* List view */
+  .grid.list-view .card { display: grid; grid-template-columns: 160px 1fr; }
+  .grid.list-view .card-img { aspect-ratio: auto; height: 160px; font-size: 60px; }
+  .grid.list-view .card-body { display: flex; flex-direction: column; justify-content: center; padding: 20px 24px; }
+  .grid.list-view .card-name { font-size: 18px; }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; margin-top: 40px;
+  }
+  .page-btn {
+    width: 38px; height: 38px; border-radius: 10px; border: 1.5px solid var(--border);
+    background: var(--white); font-family: inherit; font-size: 14px;
+    color: var(--dark); cursor: pointer; display: flex; align-items: center;
+    justify-content: center; transition: all .2s;
+  }
+  .page-btn:hover { border-color: var(--dark); }
+  .page-btn.active { background: var(--dark); border-color: var(--dark); color: #fff; font-weight: 600; }
+  .page-btn.arrow { color: var(--muted); }
+  .page-btn.arrow:hover { color: var(--dark); }
+  .page-dots { color: var(--muted); padding: 0 4px; font-size: 14px; line-height: 38px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-wrap">
+    <a href="/" class="logo">Mare<span class="dot">a</span></a>
+    <div class="search">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="search-input" placeholder="Искать в каталоге..." oninput="filterBySearch()">
+    </div>
+    <div class="nav-links">
+      <a href="/">Главная</a>
+      <a href="#" class="active">Каталог</a>
+      <a href="http://127.0.0.1:8000/actions">Акции</a>
+      <a href="http://127.0.0.1:8000/delivery#">Доставка</a>
+    </div>
+    <button class="nav-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+    <button class="nav-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <div class="badge">3</div>
+    </button>
+    <button class="btn-primary">Продавать</button>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#">Главная</a>
+  <span>›</span>
+  <span style="color:var(--dark)">Каталог</span>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>Все товары</h1>
+  <p id="total-count">48 товаров</p>
+</div>
+
+<!-- CATALOG -->
+<div class="catalog-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="filter-block">
+      <div class="filter-block-title">Категории</div>
+      <div class="cat-list">
+        <button class="cat-item active" onclick="filterCat(this,'Все')">Все товары <span class="cat-count">9</span></button>
+        <button class="cat-item" onclick="filterCat(this,'Электроника')">📱 Электроника <span class="cat-count">2</span></button>
+        <button class="cat-item" onclick="filterCat(this,'Одежда')">👗 Одежда <span class="cat-count">2</span></button>
+        <button class="cat-item" onclick="filterCat(this,'Дом и сад')">🏠 Дом и сад <span class="cat-count">1</span></button>
+        <button class="cat-item" onclick="filterCat(this,'Красота')">✨ Красота <span class="cat-count">1</span></button>
+        <button class="cat-item" onclick="filterCat(this,'Кухня')">🍳 Кухня <span class="cat-count">1</span></button>
+        <button class="cat-item" onclick="filterCat(this,'Книги')">📚 Книги <span class="cat-count">1</span></button>
+        <button class="cat-item" onclick="filterCat(this,'Игры')">🎮 Игры <span class="cat-count">1</span></button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="filter-block">
+      <div class="filter-block-title">Цена, ₽</div>
+      <div class="price-inputs">
+        <input class="price-input" type="number" id="price-from" value="0" placeholder="от">
+        <span class="price-dash">—</span>
+        <input class="price-input" type="number" id="price-to" value="50000" placeholder="до">
+      </div>
+      <input type="range" class="range-slider" min="0" max="50000" value="50000" id="price-range"
+        oninput="document.getElementById('price-to').value=this.value">
+    </div>
+
+    <hr class="divider">
+
+    <div class="filter-block">
+      <div class="filter-block-title">Дополнительно</div>
+      <div class="check-list">
+        <label class="check-item"><input type="checkbox" checked> Есть в наличии</label>
+        <label class="check-item"><input type="checkbox"> Со скидкой</label>
+        <label class="check-item"><input type="checkbox"> Бесплатная доставка</label>
+        <label class="check-item"><input type="checkbox"> Проверенный продавец</label>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="filter-block">
+      <div class="filter-block-title">Рейтинг</div>
+      <div class="rating-list">
+        <button class="rating-row" onclick="filterRating(this)"><span class="s">★★★★★</span><span class="rating-label">только 5.0</span></button>
+        <button class="rating-row active" onclick="filterRating(this)"><span class="s">★★★★☆</span><span class="rating-label">от 4.0</span></button>
+        <button class="rating-row" onclick="filterRating(this)"><span class="s">★★★☆☆</span><span class="rating-label">от 3.0</span></button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <button class="reset-btn" onclick="resetFilters()">✕ Сбросить фильтры</button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="active-filters" id="active-tags">
+        <button class="active-tag" onclick="this.remove(); updateCount()">от 4.0 ★ <span>×</span></button>
+        <button class="active-tag" onclick="this.remove(); updateCount()">Есть в наличии <span>×</span></button>
+      </div>
+      <span class="results-count" id="results-label">9 товаров</span>
+      <div class="sort-wrap">
+        <span class="sort-label">Сортировка:</span>
+        <select class="sort-select" onchange="sortProducts(this.value)">
+          <option value="default">По популярности</option>
+          <option value="cheap">Сначала дешевле</option>
+          <option value="expensive">Сначала дороже</option>
+          <option value="rating">По рейтингу</option>
+        </select>
+      </div>
+      <div class="view-btns">
+        <button class="view-btn active" onclick="setView('grid',this)" title="Сетка">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="currentColor">
+            <rect x="0" y="0" width="5.5" height="5.5" rx="1.2"/>
+            <rect x="7.5" y="0" width="5.5" height="5.5" rx="1.2"/>
+            <rect x="0" y="7.5" width="5.5" height="5.5" rx="1.2"/>
+            <rect x="7.5" y="7.5" width="5.5" height="5.5" rx="1.2"/>
+          </svg>
+        </button>
+        <button class="view-btn" onclick="setView('list',this)" title="Список">
+          <svg width="13" height="11" viewBox="0 0 13 11" fill="currentColor">
+            <rect x="0" y="0" width="13" height="3" rx="1.2"/>
+            <rect x="0" y="4" width="13" height="3" rx="1.2"/>
+            <rect x="0" y="8" width="13" height="3" rx="1.2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Product grid -->
+    <div class="grid" id="grid">
+
+      <div class="card" data-cat="Электроника" data-price="3490" data-rating="4.9" data-name="наушники">
+        <div class="card-img" style="background:#FDE8DC;">
+          <div class="card-badge">−20%</div>
+          <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+          🎧
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Электроника</div>
+          <div class="card-name">Беспроводные наушники Pro</div>
+          <div class="card-row">
+            <div><span class="card-price">3 490 ₽</span><span class="card-old">4 350 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★★</span> 4.9</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="Дом и сад" data-price="890" data-rating="4.7" data-name="суккулент">
+        <div class="card-img" style="background:#E8F0E0;">
+          <button class="fav on" onclick="toggleFav(event,this)">❤️</button>
+          🪴
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Дом и сад</div>
+          <div class="card-name">Суккулент в керамическом горшке</div>
+          <div class="card-row">
+            <div><span class="card-price">890 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★☆</span> 4.7</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="Одежда" data-price="5200" data-rating="5.0" data-name="кроссовки">
+        <div class="card-img" style="background:#EAE4F8;">
+          <div class="card-badge">Хит</div>
+          <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+          👟
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Одежда</div>
+          <div class="card-name">Кроссовки Urban Light</div>
+          <div class="card-row">
+            <div><span class="card-price">5 200 ₽</span><span class="card-old">6 800 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★★</span> 5.0</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="Кухня" data-price="12990" data-rating="4.6" data-name="кофемашина">
+        <div class="card-img" style="background:#FFF3D8;">
+          <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+          ☕
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Кухня</div>
+          <div class="card-name">Кофемашина Espresso Mini</div>
+          <div class="card-row">
+            <div><span class="card-price">12 990 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★☆</span> 4.6</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="Электроника" data-price="8400" data-rating="4.8" data-name="камера">
+        <div class="card-img" style="background:#D8EEF4;">
+          <div class="card-badge">−35%</div>
+          <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+          📷
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Электроника</div>
+          <div class="card-name">Экшн-камера Compact 4K</div>
+          <div class="card-row">
+            <div><span class="card-price">8 400 ₽</span><span class="card-old">12 900 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★★</span> 4.8</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="Красота" data-price="1290" data-rating="4.9" data-name="свечи лаванда">
+        <div class="card-img" style="background:#F5E6EC;">
+          <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+          🕯️
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Красота</div>
+          <div class="card-name">Аромасвечи «Лаванда»</div>
+          <div class="card-row">
+            <div><span class="card-price">1 290 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★★</span> 4.9</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="Игры" data-price="4199" data-rating="4.5" data-name="геймпад">
+        <div class="card-img" style="background:#E6EEF8;">
+          <button class="fav on" onclick="toggleFav(event,this)">❤️</button>
+          🎮
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Игры</div>
+          <div class="card-name">Геймпад Wireless Pro</div>
+          <div class="card-row">
+            <div><span class="card-price">4 199 ₽</span><span class="card-old">5 500 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★☆</span> 4.5</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="Книги" data-price="749" data-rating="5.0" data-name="атомные привычки">
+        <div class="card-img" style="background:#EEFAF0;">
+          <div class="card-badge new-badge">Новинка</div>
+          <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+          📗
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Книги</div>
+          <div class="card-name">«Атомные привычки» Д. Клир</div>
+          <div class="card-row">
+            <div><span class="card-price">749 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★★</span> 5.0</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+      <div class="card" data-cat="Одежда" data-price="2800" data-rating="4.6" data-name="кепка шапка">
+        <div class="card-img" style="background:#F0EAE0;">
+          <button class="fav" onclick="toggleFav(event,this)">🤍</button>
+          🧢
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Одежда</div>
+          <div class="card-name">Кепка Vintage Wash</div>
+          <div class="card-row">
+            <div><span class="card-price">2 800 ₽</span></div>
+            <div class="card-stars"><span class="s">★★★★☆</span> 4.6</div>
+          </div>
+          <button class="add" onclick="addToCart(event,this)">В корзину</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <button class="page-btn arrow">‹</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">4</button>
+      <span class="page-dots">...</span>
+      <button class="page-btn">12</button>
+      <button class="page-btn arrow">›</button>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  let currentCat = 'Все';
+
+  function applyFilters() {
+    const q = document.getElementById('search-input').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    let count = 0;
+    cards.forEach(c => {
+      const matchCat  = currentCat === 'Все' || c.dataset.cat === currentCat;
+      const matchName = c.dataset.name.includes(q) || c.querySelector('.card-name').textContent.toLowerCase().includes(q);
+      const show = matchCat && matchName;
+      c.style.display = show ? '' : 'none';
+      if (show) count++;
+    });
+    document.getElementById('results-label').textContent = count + ' товаров';
+    document.getElementById('total-count').textContent = count + ' товаров';
+  }
+
+  function filterCat(btn, cat) {
+    currentCat = cat;
+    document.querySelectorAll('.cat-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  function filterBySearch() { applyFilters(); }
+
+  function sortProducts(val) {
+    const grid = document.getElementById('grid');
+    const cards = [...grid.querySelectorAll('.card')];
+    cards.sort((a, b) => {
+      if (val === 'cheap')     return +a.dataset.price - +b.dataset.price;
+      if (val === 'expensive') return +b.dataset.price - +a.dataset.price;
+      if (val === 'rating')    return +b.dataset.rating - +a.dataset.rating;
+      return 0;
+    });
+    cards.forEach(c => grid.appendChild(c));
+  }
+
+  function setView(mode, btn) {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('grid').classList.toggle('list-view', mode === 'list');
+  }
+
+  function filterRating(btn) {
+    document.querySelectorAll('.rating-row').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function toggleFav(e, btn) {
+    e.stopPropagation();
+    btn.classList.toggle('on');
+    btn.textContent = btn.classList.contains('on') ? '❤️' : '🤍';
+  }
+
+  function addToCart(e, btn) {
+    e.stopPropagation();
+    const orig = btn.textContent;
+    btn.textContent = '✓ Добавлено';
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1500);
+  }
+
+  function resetFilters() {
+    filterCat(document.querySelector('.cat-item'), 'Все');
+    document.getElementById('search-input').value = '';
+    document.getElementById('price-from').value = 0;
+    document.getElementById('price-to').value = 50000;
+    document.getElementById('price-range').value = 50000;
+    document.querySelectorAll('.rating-row').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.check-list input').forEach(i => i.checked = false);
+  }
+
+  function updateCount() {
+    applyFilters();
+  }
+
+  // Pagination
+  document.querySelectorAll('.page-btn:not(.arrow)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.page-btn:not(.arrow)').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
