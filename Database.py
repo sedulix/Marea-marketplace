@@ -17,5 +17,3 @@ class Tovari(Base):
 
 Base.metadata.create_all(bind=engine)
 
-inspector = inspect(engine)
-print("Таблицы в БД:", inspector.get_table_names())
