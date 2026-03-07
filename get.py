@@ -2,8 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 from sqlalchemy.orm import Session
-
-from data import SessionLocal, Tovari
+from data.Database import SessionLocal, Tovari
 from Schemas import Tovar
 
 
@@ -68,5 +67,12 @@ async def sell(tovar:Tovar,db: Session = Depends(get_db)):
     db.refresh(new_tovar)
 
     return new_tovar
+
+@app.get("/cart")
+async def cart(request:Request):
+    return templates.TemplateResponse(
+        "cart.html",
+        {"request": request}
+    )
 
 

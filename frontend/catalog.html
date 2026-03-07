@@ -637,18 +637,48 @@
     btn.textContent = btn.classList.contains('on') ? '❤️' : '🤍';
   }
 
-  function addToCart(e, btn) {
-    e.stopPropagation();
-    const orig = btn.textContent;
-    btn.textContent = '✓ Добавлено';
-    btn.style.background = 'var(--accent)';
-    btn.style.color = '#fff';
-    setTimeout(() => {
-      btn.textContent = orig;
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 1500);
+ function addToCart(e, btn) {
+  e.stopPropagation();
+
+  const card  = btn.closest('.card');
+  const name  = card.querySelector('.card-name').textContent;
+  const price = +card.dataset.price;
+  const emoji = card.querySelector('.card-img').textContent.trim();
+
+
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const existing = cart.find(i => i.name === name);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ name, price, emoji, qty: 1 });
   }
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+
+  updateCartBadge();
+
+
+  const orig = btn.textContent;
+  btn.textContent = '✓ Добавлено';
+  btn.style.background = 'var(--accent)';
+  btn.style.color = '#fff';
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 1500);
+}
+
+function updateCartBadge() {
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const total = cart.reduce((sum, i) => sum + i.qty, 0);
+  const badge = document.querySelector('.badge');
+  if (badge) badge.textContent = total;
+}
+
+
+updateCartBadge();
 
   function resetFilters() {
     filterCat(document.querySelector('.cat-item'), 'Все');
