@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 from sqlalchemy.orm import Session
-from data.Database import SessionLocal, Tovari
+from data import SessionLocal, Tovari
 from Schemas import Tovar
 
 
