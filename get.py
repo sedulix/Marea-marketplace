@@ -68,6 +68,7 @@ async def sell(tovar:Tovar,db: Session = Depends(get_db)):
 
     return new_tovar
 
+
 @app.get("/cart")
 async def cart(request:Request):
     return templates.TemplateResponse(
