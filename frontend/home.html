@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -75,8 +76,7 @@
   .search:focus-within {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(192,92,53,.1);
-  }
-  .search svg { color: var(--muted); flex-shrink: 0; }
+  }svg { color: var(--muted); flex-shrink: 0; }
   .search input {
     border: none; background: transparent;
     font-family: inherit; font-size: 14px; color: var(--dark);
@@ -646,13 +646,6 @@
 <nav>
   <div class="nav-wrap">
     <a href="#" class="logo">Mare<span class="dot">a</span></a>
-
-    <div class="search">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
-      <input type="text" placeholder="Искать товары, бренды, категории...">
-    </div>
 
     <div class="nav-links">
       <a href="http://127.0.0.1:8000/catalog">Каталог</a>
