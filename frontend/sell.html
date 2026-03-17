@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marea — Добавить товар</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
     --bg: #F6F3EE;
     --white: #FFFFFF;
     --dark: #18160F;
@@ -19,42 +21,51 @@
     --border: #E3DDD5;
     --chip-bg: #EEEBE5;
     --red: #D03A3A;
-  }
+}
 
-  body {
+body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
     color: var(--dark);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-  }
+}
 
-  nav {
+nav {
     background: rgba(246,243,238,.93);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
-  }
-  .nav-wrap {
+}
+
+.nav-wrap {
     max-width: 1280px; margin: 0 auto; padding: 0 40px;
     height: 66px; display: flex; align-items: center; gap: 28px;
-  }
-  .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: var(--dark); text-decoration: none; }
-  .logo .dot { color: var(--accent); }
-  .nav-links { display: flex; gap: 22px; margin-left: auto; }
-  .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .2s; }
-  .nav-links a:hover { color: var(--dark); }
-  .nav-links a.active { color: var(--dark); font-weight: 500; }
+}
 
-  .page {
+.logo {
+    font-family: 'Playfair Display',
+    serif; font-size: 22px;
+    font-weight: 600;
+    color: var(--dark);
+    text-decoration: none;
+}
+
+.logo .dot { color: var(--accent); }
+.nav-links { display: flex; gap: 22px; margin-left: auto; }
+.nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: var(--dark); }
+.nav-links a.active { color: var(--dark); font-weight: 500; }
+
+.page {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 40px 20px;
-  }
+}
 
-  .form-box {
+.form-box {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: 22px;
@@ -63,46 +74,46 @@
     max-width: 500px;
     box-shadow: 0 8px 40px rgba(0,0,0,.06);
     animation: fadeUp .4s ease both;
-  }
+}
 
-  @keyframes fadeUp {
+ @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
-  }
+}
 
-  h1 {
+h1 {
     font-family: 'Playfair Display', serif;
     font-size: 26px;
     font-weight: 500;
     margin-bottom: 6px;
-  }
+}
 
-  .subtitle {
+.subtitle {
     font-size: 14px;
     color: var(--muted);
     margin-bottom: 32px;
     line-height: 1.6;
-  }
+}
 
-  .field { margin-bottom: 20px; }
+.field { margin-bottom: 20px; }
 
-  .field label {
+.field label {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 13px;
     font-weight: 500;
     margin-bottom: 7px;
-  }
+}
 
-  .field label .counter {
+.field label .counter {
     font-weight: 400;
     color: var(--muted);
     font-size: 12px;
-  }
+}
 
-  .field input,
-  .field textarea {
+.field input,
+.field textarea {
     width: 100%;
     border: 1.5px solid var(--border);
     background: var(--bg);
@@ -113,41 +124,41 @@
     color: var(--dark);
     outline: none;
     transition: border-color .2s, box-shadow .2s, background .2s;
-  }
+}
 
-  .field input:focus,
-  .field textarea:focus {
+.field input:focus,
+.field textarea:focus {
     border-color: var(--accent);
     background: #fff;
     box-shadow: 0 0 0 3px rgba(192,92,53,.08);
-  }
+}
 
-  .field input::placeholder,
-  .field textarea::placeholder { color: var(--muted); }
+.field input::placeholder,
+.field textarea::placeholder { color: var(--muted); }
 
-  .field textarea {
+.field textarea {
     resize: none;
     height: 130px;
     line-height: 1.65;
-  }
+}
 
-  .field input.err,
-  .field textarea.err { border-color: var(--red); }
+.field input.err,
+.field textarea.err { border-color: var(--red); }
 
-  .err-msg {
+.err-msg {
     font-size: 12px;
     color: var(--red);
     margin-top: 5px;
     display: none;
-  }
+}
 
-  .actions {
+.actions {
     display: flex;
     gap: 10px;
     margin-top: 28px;
-  }
+}
 
-  .btn-cancel {
+.btn-cancel {
     background: var(--chip-bg);
     color: var(--dark);
     border: none;
@@ -158,10 +169,11 @@
     font-weight: 500;
     cursor: pointer;
     transition: background .2s;
-  }
-  .btn-cancel:hover { background: var(--border); }
+}
 
-  .btn-submit {
+.btn-cancel:hover { background: var(--border); }
+
+.btn-submit {
     flex: 1;
     background: var(--accent);
     color: #fff;
@@ -173,19 +185,21 @@
     font-weight: 600;
     cursor: pointer;
     transition: background .2s;
-  }
-  .btn-submit:hover { background: var(--accent-hover); }
+}
 
-  /* SUCCESS */
-  .success {
+.btn-submit:hover { background: var(--accent-hover); }
+
+.success {
     text-align: center;
     display: none;
     animation: fadeUp .4s ease both;
-  }
-  .success-icon { font-size: 60px; margin-bottom: 18px; }
-  .success h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 500; margin-bottom: 8px; }
-  .success p { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
-  .btn-again {
+}
+
+.success-icon { font-size: 60px; margin-bottom: 18px; }
+.success h2 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 500; margin-bottom: 8px; }
+.success p { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+
+.btn-again {
     background: var(--accent-soft);
     color: var(--accent);
     border: none;
@@ -196,9 +210,11 @@
     font-weight: 600;
     cursor: pointer;
     transition: background .2s;
-  }
-  .btn-again:hover { background: #e8d5cc; }
+}
+.btn-again:hover { background: #e8d5cc; }
+
 </style>
+
 </head>
 <body>
 
@@ -206,10 +222,10 @@
   <div class="nav-wrap">
     <a href="/" class="logo">Mare<span class="dot">a</span></a>
     <div class="nav-links">
-      <a href="/">Главная</a>
-      <a href="">Каталог</a>
-      <a href="#">Акции</a>
-      <a href="#">Доставка</a>
+      <a href="http://127.0.0.1:8000/home">Главная</a>
+      <a href="http://127.0.0.1:8000/catalog">Каталог</a>
+      <a href="http://127.0.0.1:8000/actions">Акции</a>
+      <a href="http://127.0.0.1:8000/delivery">Доставка</a>
       <a href="#" class="active">Продавать</a>
     </div>
   </div>

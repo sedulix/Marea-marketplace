@@ -1,22 +1,20 @@
-from fastapi import FastAPI, Depends
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
-from sqlalchemy.orm import Session
-from data import SessionLocal, Tovari
-from Schemas import Tovar
+from fastapi import FastAPI
+
+from backend.auth import registration, login, logout, auth_me
+from backend.sell_process import sell
 
 
-app = FastAPI()
 templates = Jinja2Templates(directory="frontend")
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-
-    finally:
-        db.close()
+app = FastAPI()
+app.include_router(registration.router)
+app.include_router(login.router)
+app.include_router(logout.router)
+app.include_router(auth_me.router)
+app.include_router(sell.router)
 
 
 @app.get("/")
@@ -24,6 +22,30 @@ def home(request:Request):
     return templates.TemplateResponse(
         "home.html",
         {"request": request}
+    )
+
+
+@app.get("/registration")
+async def catalog(request:Request):
+    return templates.TemplateResponse(
+        "registration.html",
+        {"request":request}
+    )
+
+
+@app.get("/login")
+async def catalog(request:Request):
+    return templates.TemplateResponse(
+        "login.html",
+        {"request":request}
+    )
+
+
+@app.get("/account_page")
+async def catalog(request:Request):
+    return templates.TemplateResponse(
+        "account_page.html",
+        {"request":request}
     )
 
 
@@ -59,21 +81,10 @@ async def sel(request:Request):
     )
 
 
-@app.post("/sell")
-async def sell(tovar:Tovar,db: Session = Depends(get_db)):
-    new_tovar = Tovari(name=tovar.name,desc=tovar.description)
-    db.add(new_tovar)
-    db.commit()
-    db.refresh(new_tovar)
-
-    return new_tovar
-
-
 @app.get("/cart")
 async def cart(request:Request):
     return templates.TemplateResponse(
         "cart.html",
         {"request": request}
     )
-
 

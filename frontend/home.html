@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marea — Маркетплейс</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
     --bg: #F6F3EE;
     --white: #FFFFFF;
     --dark: #18160F;
@@ -18,28 +20,27 @@
     --accent-soft: #F2E5DE;
     --border: #E3DDD5;
     --chip-bg: #EEEBE5;
-  }
+}
 
-  html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
 
-  body {
+body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
     color: var(--dark);
     min-height: 100vh;
-  }
+}
 
-  /* ───── NAV ───── */
-  nav {
+nav {
     position: sticky;
     top: 0;
     z-index: 200;
     background: rgba(246,243,238,.92);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
-  }
+}
 
-  .nav-wrap {
+.nav-wrap {
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 40px;
@@ -47,9 +48,9 @@
     display: flex;
     align-items: center;
     gap: 32px;
-  }
+}
 
-  .logo {
+.logo {
     font-family: 'Playfair Display', serif;
     font-size: 23px;
     font-weight: 600;
@@ -57,10 +58,11 @@
     text-decoration: none;
     letter-spacing: -.3px;
     flex-shrink: 0;
-  }
-  .logo .dot { color: var(--accent); }
+}
 
-  .search {
+.logo .dot { color: var(--accent); }
+
+.search {
     flex: 1;
     max-width: 500px;
     display: flex;
@@ -71,35 +73,46 @@
     padding: 0 16px;
     gap: 10px;
     transition: border-color .2s, box-shadow .2s;
-  }
-  .search:focus-within {
+}
+
+.search:focus-within {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(192,92,53,.1);
-  }
-  .search svg { color: var(--muted); flex-shrink: 0; }
-  .search input {
-    border: none; background: transparent;
-    font-family: inherit; font-size: 14px; color: var(--dark);
-    width: 100%; height: 42px; outline: none;
-  }
-  .search input::placeholder { color: var(--muted); }
+}
 
-  .nav-links {
+.search svg { color: var(--muted); flex-shrink: 0; }
+
+.search input {
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--dark);
+    width: 100%;
+    height: 42px;
+    outline: none;
+}
+
+.search input::placeholder { color: var(--muted); }
+
+.nav-links {
     display: flex;
     align-items: center;
     gap: 24px;
     margin-left: auto;
-  }
-  .nav-links a {
+}
+
+.nav-links a {
     font-size: 14px;
     font-weight: 400;
     color: var(--muted);
     text-decoration: none;
     transition: color .2s;
-  }
-  .nav-links a:hover { color: var(--dark); }
+}
 
-  .nav-icon {
+.nav-links a:hover { color: var(--dark); }
+
+.nav-icon {
     position: relative;
     background: var(--chip-bg);
     border: none;
@@ -112,38 +125,48 @@
     cursor: pointer;
     color: var(--dark);
     transition: background .2s;
-  }
-  .nav-icon:hover { background: var(--border); }
+}
 
-  .badge {
+.nav-icon:hover { background: var(--border); }
+
+.badge {
     position: absolute;
-    top: -5px; right: -5px;
+    top: -5px;
+    right: -5px;
     background: var(--accent);
     color: #fff;
     font-size: 10px;
     font-weight: 700;
-    width: 18px; height: 18px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 2px solid var(--bg);
-  }
+}
 
-  .btn-primary {
+.btn-primary {
     background: var(--accent);
-    color: #fff;
+    color: #fff; /* Белый цвет текста */
     border: none;
     border-radius: 10px;
     padding: 9px 22px;
     font-family: inherit;
     font-size: 14px;
-    font-weight: 500;
     cursor: pointer;
     transition: background .2s;
-  }
-  .btn-primary:hover { background: var(--accent-hover); }
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+ }
 
-  /* ───── HERO ───── */
-  .hero {
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.hero {
     max-width: 1280px;
     margin: 36px auto;
     padding: 0 40px;
@@ -151,9 +174,9 @@
     grid-template-columns: 1fr 320px;
     gap: 18px;
     height: 340px;
-  }
+}
 
-  .hero-main {
+.hero-main {
     background: linear-gradient(130deg, #241C16 0%, #5A3220 60%, #8C4C30 100%);
     border-radius: 22px;
     padding: 52px 56px;
@@ -162,25 +185,27 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
-  }
-  .hero-main::before {
+}
+
+.hero-main::before {
     content: '';
     position: absolute;
     right: -80px; top: -80px;
     width: 420px; height: 420px;
     background: radial-gradient(circle, rgba(200,90,50,.4) 0%, transparent 65%);
     pointer-events: none;
-  }
-  .hero-main::after {
+}
+
+.hero-main::after {
     content: '';
     position: absolute;
     bottom: -100px; left: 280px;
     width: 300px; height: 300px;
     background: radial-gradient(circle, rgba(255,180,80,.12) 0%, transparent 70%);
     pointer-events: none;
-  }
+}
 
-  .hero-pill {
+.hero-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -195,10 +220,11 @@
     border-radius: 100px;
     width: fit-content;
     margin-bottom: 20px;
-  }
-  .hero-pill span { font-size: 14px; }
+}
 
-  .hero-main h1 {
+.hero-pill span { font-size: 14px; }
+
+.hero-main h1 {
     font-family: 'Playfair Display', serif;
     font-size: 42px;
     font-weight: 500;
@@ -207,13 +233,14 @@
     margin-bottom: 24px;
     position: relative;
     z-index: 1;
-  }
-  .hero-main h1 em {
+}
+
+.hero-main h1 em {
     font-style: italic;
     color: #F5A882;
-  }
+}
 
-  .hero-btn {
+.hero-btn {
     background: #fff;
     color: var(--dark);
     border: none;
@@ -227,16 +254,86 @@
     position: relative;
     z-index: 1;
     transition: opacity .2s;
-  }
-  .hero-btn:hover { opacity: .9; }
+}
 
-  .hero-side {
+.hero-btn:hover { opacity: .9; }
+
+.hero-side {
     display: flex;
     flex-direction: column;
     gap: 18px;
-  }
+}
 
-  .mini-card {
+.auth-btn{
+    font-size:14px;
+    text-decoration:none;
+    color:var(--muted);
+    transition:.2s;
+}
+
+.auth-btn:hover{
+    color:var(--dark);
+}
+
+.profile-wrap{
+    position:relative;
+}
+
+.profile-avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.profile-menu{
+    position:absolute;
+    right:0;
+    top:48px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    width:180px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    padding:8px 0;
+    opacity:0;
+    transform:translateY(-5px);
+    pointer-events:none;
+    transition:.2s;
+}
+
+.profile-wrap:hover .profile-menu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+.profile-menu a{
+    display:block;
+    padding:10px 16px;
+    font-size:14px;
+    color:var(--dark);
+    text-decoration:none;
+}
+
+.profile-menu a:hover{
+    background:var(--chip-bg);
+}
+
+.profile-name{
+    padding:10px 16px;
+    font-size:13px;
+    color:var(--muted);
+    border-bottom:1px solid var(--border);
+}
+
+.mini-card {
     flex: 1;
     border-radius: 18px;
     padding: 22px 24px;
@@ -247,27 +344,29 @@
     overflow: hidden;
     cursor: pointer;
     transition: transform .25s;
-  }
-  .mini-card:hover { transform: scale(1.02); }
-  .mini-card:nth-child(1) { background: linear-gradient(145deg, #E8DDD0, #CDB89A); }
-  .mini-card:nth-child(2) { background: linear-gradient(145deg, #C8D8C8, #9EBCA0); }
+}
 
-  .mini-card-tag {
+.mini-card:hover { transform: scale(1.02); }
+.mini-card:nth-child(1) { background: linear-gradient(145deg, #E8DDD0, #CDB89A); }
+.mini-card:nth-child(2) { background: linear-gradient(145deg, #C8D8C8, #9EBCA0); }
+
+.mini-card-tag {
     font-size: 10px;
     font-weight: 600;
     letter-spacing: .8px;
     text-transform: uppercase;
     color: rgba(30,20,10,.55);
     margin-bottom: 4px;
-  }
-  .mini-card h3 {
+}
+
+.mini-card h3 {
     font-family: 'Playfair Display', serif;
     font-size: 19px;
     font-weight: 500;
     color: #1A140D;
-  }
+}
 
-  .mini-card-arrow {
+.mini-card-arrow {
     position: absolute;
     top: 16px; right: 16px;
     width: 30px; height: 30px;
@@ -275,45 +374,45 @@
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 14px;
-  }
+}
 
-  /* ───── SECTION WRAPPER ───── */
-  .section {
+.section {
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 40px 52px;
-  }
+}
 
-  .section-head {
+.section-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     margin-bottom: 22px;
-  }
+}
 
-  .section-head h2 {
+.section-head h2 {
     font-family: 'Playfair Display', serif;
     font-size: 26px;
     font-weight: 500;
-  }
+}
 
-  .see-all {
+.see-all {
     font-size: 13px;
     color: var(--accent);
     text-decoration: none;
     font-weight: 500;
     transition: opacity .2s;
-  }
-  .see-all:hover { opacity: .7; }
+}
 
-  /* ───── CATEGORIES ───── */
-  .cats {
+.see-all:hover { opacity: .7; }
+
+
+.cats {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-  }
+}
 
-  .cat-pill {
+.cat-pill {
     background: var(--white);
     border: 1.5px solid var(--border);
     border-radius: 100px;
@@ -324,29 +423,32 @@
     cursor: pointer;
     transition: all .2s;
     white-space: nowrap;
-  }
-  .cat-pill:hover { border-color: var(--dark); }
-  .cat-pill.active {
+}
+
+.cat-pill:hover { border-color: var(--dark); }
+
+ cat-pill.active {
     background: var(--dark);
     border-color: var(--dark);
     color: #fff;
-  }
+}
 
-  /* ───── FILTERS BAR ───── */
-  .filters {
+.filters {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 28px;
     flex-wrap: wrap;
-  }
-  .filters-label {
+}
+
+.filters-label {
     font-size: 13px;
     color: var(--muted);
     font-weight: 500;
     margin-right: 4px;
-  }
-  .chip {
+}
+
+.chip {
     background: var(--chip-bg);
     border: none;
     border-radius: 8px;
@@ -356,15 +458,17 @@
     color: var(--dark);
     cursor: pointer;
     transition: background .2s;
-  }
-  .chip:hover { background: var(--border); }
-  .chip.on {
+}
+
+.chip:hover { background: var(--border); }
+
+.chip.on {
     background: var(--accent-soft);
     color: var(--accent);
     font-weight: 500;
-  }
+}
 
-  .sort {
+.sort {
     margin-left: auto;
     border: 1.5px solid var(--border);
     background: var(--white);
@@ -375,16 +479,15 @@
     color: var(--dark);
     outline: none;
     cursor: pointer;
-  }
+}
 
-  /* ───── PRODUCT GRID ───── */
-  .grid {
+.grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-  }
+}
 
-  .card {
+.card {
     background: var(--white);
     border-radius: 18px;
     overflow: hidden;
@@ -392,28 +495,28 @@
     transition: transform .25s, box-shadow .25s;
     cursor: pointer;
     animation: fadeUp .5s both;
-  }
+}
 
-  @keyframes fadeUp {
+@keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
-  }
+}
 
-  .card:nth-child(1) { animation-delay: .05s; }
-  .card:nth-child(2) { animation-delay: .1s; }
-  .card:nth-child(3) { animation-delay: .15s; }
-  .card:nth-child(4) { animation-delay: .2s; }
-  .card:nth-child(5) { animation-delay: .25s; }
-  .card:nth-child(6) { animation-delay: .3s; }
-  .card:nth-child(7) { animation-delay: .35s; }
-  .card:nth-child(8) { animation-delay: .4s; }
+.card:nth-child(1) { animation-delay: .05s; }
+.card:nth-child(2) { animation-delay: .1s; }
+.card:nth-child(3) { animation-delay: .15s; }
+.card:nth-child(4) { animation-delay: .2s; }
+.card:nth-child(5) { animation-delay: .25s; }
+.card:nth-child(6) { animation-delay: .3s; }
+.card:nth-child(7) { animation-delay: .35s; }
+.card:nth-child(8) { animation-delay: .4s; }
 
-  .card:hover {
+.card:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 48px rgba(0,0,0,.09);
-  }
+}
 
-  .card-img {
+.card-img {
     aspect-ratio: 1;
     position: relative;
     overflow: hidden;
@@ -422,10 +525,11 @@
     justify-content: center;
     font-size: 80px;
     transition: transform .3s;
-  }
-  .card:hover .card-img { transform: scale(1.05); }
+}
 
-  .card-badge {
+.card:hover .card-img { transform: scale(1.05); }
+
+.card-badge {
     position: absolute;
     top: 12px; left: 12px;
     background: var(--accent);
@@ -434,9 +538,9 @@
     font-weight: 600;
     padding: 3px 9px;
     border-radius: 6px;
-  }
+}
 
-  .fav {
+.fav {
     position: absolute;
     top: 10px; right: 10px;
     background: rgba(255,255,255,.88);
@@ -448,60 +552,63 @@
     cursor: pointer;
     opacity: 0;
     transition: opacity .2s;
-  }
-  .card:hover .fav { opacity: 1; }
-  .fav.on { opacity: 1; }
+}
 
-  .card-body { padding: 16px; }
+.card:hover .fav { opacity: 1; }
+.fav.on { opacity: 1; }
 
-  .card-cat {
+.card-body { padding: 16px; }
+
+.card-cat {
     font-size: 11px;
     font-weight: 500;
     letter-spacing: .5px;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 5px;
-  }
+}
 
-  .card-name {
+.card-name {
     font-family: 'Playfair Display', serif;
     font-size: 16px;
     font-weight: 500;
     color: var(--dark);
     margin-bottom: 10px;
     line-height: 1.3;
-  }
+}
 
-  .card-row {
+.card-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 12px;
-  }
+}
 
-  .card-price {
+.card-price {
     font-size: 19px;
     font-weight: 600;
     color: var(--dark);
-  }
-  .card-old {
+}
+
+.card-old {
     font-size: 13px;
     color: var(--muted);
     text-decoration: line-through;
     margin-left: 6px;
     font-weight: 400;
-  }
+}
 
-  .card-stars {
+.card-stars {
     font-size: 12px;
     color: var(--muted);
     display: flex;
     align-items: center;
     gap: 3px;
-  }
-  .card-stars .s { color: #E0A030; letter-spacing: -1px; }
+}
 
-  .add {
+.card-stars .s { color: #E0A030; letter-spacing: -1px; }
+
+.add {
     width: 100%;
     background: var(--chip-bg);
     color: var(--dark);
@@ -513,20 +620,20 @@
     font-weight: 500;
     cursor: pointer;
     transition: background .2s, color .2s;
-  }
-  .add:hover {
+}
+
+.add:hover {
     background: var(--accent);
     color: #fff;
-  }
+}
 
-  /* ───── BANNER ───── */
-  .promo-banner {
+.promo-banner {
     max-width: 1280px;
     margin: 0 auto 52px;
     padding: 0 40px;
-  }
+}
 
-  .promo-inner {
+.promo-inner {
     background: linear-gradient(120deg, #1A3030 0%, #2A5040 100%);
     border-radius: 22px;
     padding: 52px 64px;
@@ -535,41 +642,42 @@
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-  }
+}
 
-  .promo-inner::before {
+.promo-inner::before {
     content: '';
     position: absolute;
     right: 0; top: 0;
     width: 400px; height: 100%;
     background: radial-gradient(circle at 80% 50%, rgba(80,180,120,.25) 0%, transparent 70%);
     pointer-events: none;
-  }
+}
 
-  .promo-text h2 {
+.promo-text h2 {
     font-family: 'Playfair Display', serif;
     font-size: 34px;
     font-weight: 500;
     color: #EFF8F2;
     margin-bottom: 10px;
-  }
-  .promo-text p {
+}
+
+.promo-text p {
     font-size: 15px;
     color: rgba(255,255,255,.55);
     max-width: 360px;
     line-height: 1.6;
-  }
+}
 
-  .promo-action {
+.promo-action {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
     z-index: 1;
-  }
+}
 
-  .promo-btn {
+.promo-btn {
     background: #5ABF8A;
     color: #fff;
     border: none;
@@ -580,55 +688,58 @@
     font-weight: 600;
     cursor: pointer;
     transition: background .2s;
-  }
-  .promo-btn:hover { background: #44A872; }
+}
 
-  .promo-note {
+.promo-btn:hover { background: #44A872; }
+
+.promo-note {
     font-size: 12px;
     color: rgba(255,255,255,.4);
-  }
+}
 
-  /* ───── FOOTER ───── */
-  footer {
+footer {
     background: var(--dark);
     color: rgba(255,255,255,.45);
-  }
+}
 
-  .footer-grid {
+.footer-grid {
     max-width: 1280px;
     margin: 0 auto;
     padding: 56px 40px 48px;
     display: grid;
     grid-template-columns: 1.6fr 1fr 1fr 1fr;
     gap: 40px;
-  }
+}
 
-  .footer-brand .logo { color: #fff; display: block; margin-bottom: 12px; }
-  .footer-brand p {
+.footer-brand .logo { color: #fff; display: block; margin-bottom: 12px; }
+
+.footer-brand p {
     font-size: 13px;
     line-height: 1.7;
     max-width: 210px;
-  }
+}
 
-  .footer-col h4 {
+.footer-col h4 {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: .8px;
     text-transform: uppercase;
     color: rgba(255,255,255,.75);
     margin-bottom: 18px;
-  }
-  .footer-col a {
+}
+
+.footer-col a {
     display: block;
     font-size: 13px;
     color: rgba(255,255,255,.42);
     text-decoration: none;
     margin-bottom: 11px;
     transition: color .2s;
-  }
-  .footer-col a:hover { color: rgba(255,255,255,.9); }
+}
 
-  .footer-bottom {
+.footer-col a:hover { color: rgba(255,255,255,.9); }
+
+.footer-bottom {
     border-top: 1px solid rgba(255,255,255,.07);
     padding: 20px 40px;
     max-width: 1280px;
@@ -637,12 +748,14 @@
     align-items: center;
     justify-content: space-between;
     font-size: 12px;
-  }
+}
+
 </style>
+
 </head>
 <body>
 
-<!-- ── NAV ── -->
+
 <nav>
   <div class="nav-wrap">
     <a href="#" class="logo">Mare<span class="dot">a</span></a>
@@ -657,7 +770,7 @@
     <div class="nav-links">
       <a href="http://127.0.0.1:8000/catalog">Каталог</a>
       <a href="http://127.0.0.1:8000/actions">Акции</a>
-      <a href="http://127.0.0.1:8000/delivery#">Доставка</a>
+      <a href="http://127.0.0.1:8000/delivery">Доставка</a>
     </div>
 
     <button class="nav-icon" style="margin-left:8px;">
@@ -667,20 +780,25 @@
     </button>
 
     <button class="nav-icon">
+      <a href="http://127.0.0.1:8000/cart" class="nav-icon">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+
         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
         <line x1="3" y1="6" x2="21" y2="6"/>
         <path d="M16 10a4 4 0 0 1-8 0"/>
       </svg>
+
       <div class="badge">3</div>
+      </a>
     </button>
 
-    <button class="btn-primary">Продавать</button>
+    <div id="auth-area" style="display:flex; align-items:center; gap:12px;"></div>
   </div>
 </nav>
 
-<!-- ── HERO ── -->
+
 <div class="hero">
+
   <div class="hero-main">
     <div class="hero-pill"><span>🔥</span> Весенняя распродажа</div>
     <h1>Найди вещи,<br>которые тебя<br><em>вдохновляют</em></h1>
@@ -688,24 +806,29 @@
   </div>
 
   <div class="hero-side">
+
     <div class="mini-card">
       <div class="mini-card-arrow">→</div>
       <div class="mini-card-tag">Новинки</div>
       <h3>Весенний декор</h3>
     </div>
+
     <div class="mini-card">
       <div class="mini-card-arrow">→</div>
       <div class="mini-card-tag">До −40%</div>
       <h3>Электроника</h3>
     </div>
+
   </div>
 </div>
 
-<!-- ── CATEGORIES ── -->
+
 <div class="section">
+
   <div class="section-head">
     <h2>Категории</h2>
   </div>
+
   <div class="cats">
     <button class="cat-pill active">Все товары</button>
     <button class="cat-pill">👗 Одежда</button>
@@ -717,10 +840,12 @@
     <button class="cat-pill">🍳 Кухня</button>
     <button class="cat-pill">🏋️ Спорт</button>
   </div>
+
 </div>
 
-<!-- ── PRODUCTS ── -->
+
 <div class="section">
+
   <div class="section-head">
     <h2>Популярное сейчас</h2>
     <a href="#" class="see-all">Смотреть все →</a>
@@ -733,188 +858,237 @@
     <button class="chip">До 5 000 ₽</button>
     <button class="chip">С доставкой</button>
     <button class="chip">Есть в наличии</button>
+
     <select class="sort">
       <option>По популярности</option>
       <option>Сначала дешевле</option>
       <option>Сначала дороже</option>
       <option>По рейтингу</option>
     </select>
+
   </div>
 
   <div class="grid">
 
-    <!-- Card 1 -->
-    <div class="card">
+
+    <div class="card" data-price="3490" data-name="Беспроводные наушники Pro" data-emoji="🎧">
+
       <div class="card-img" style="background:#FDE8DC;">
         <div class="card-badge">−20%</div>
         <button class="fav">🤍</button>
         🎧
       </div>
+
       <div class="card-body">
         <div class="card-cat">Электроника</div>
         <div class="card-name">Беспроводные наушники Pro</div>
         <div class="card-row">
+
           <div>
             <span class="card-price">3 490 ₽</span>
             <span class="card-old">4 350 ₽</span>
           </div>
+
           <div class="card-stars"><span class="s">★★★★★</span> 4.9</div>
+
         </div>
         <button class="add">В корзину</button>
+
       </div>
     </div>
 
-    <!-- Card 2 -->
-    <div class="card">
+
+    <div class="card" data-price="890" data-name="Суккулент в керамическом горшке" data-emoji="🪴">
+
       <div class="card-img" style="background:#E8F0E0;">
         <button class="fav on">❤️</button>
         🪴
       </div>
+
       <div class="card-body">
         <div class="card-cat">Дом и сад</div>
         <div class="card-name">Суккулент в керамическом горшке</div>
+
         <div class="card-row">
           <div><span class="card-price">890 ₽</span></div>
           <div class="card-stars"><span class="s">★★★★☆</span> 4.7</div>
         </div>
+
         <button class="add">В корзину</button>
       </div>
+
     </div>
 
-    <!-- Card 3 -->
-    <div class="card">
+
+    <div class="card" data-price="5200" data-name="Кроссовки Urban Light" data-emoji="👟">
+
       <div class="card-img" style="background:#EAE4F8;">
         <div class="card-badge">Хит</div>
         <button class="fav">🤍</button>
         👟
       </div>
+
       <div class="card-body">
         <div class="card-cat">Одежда</div>
         <div class="card-name">Кроссовки Urban Light</div>
         <div class="card-row">
+
           <div>
             <span class="card-price">5 200 ₽</span>
             <span class="card-old">6 800 ₽</span>
           </div>
+
           <div class="card-stars"><span class="s">★★★★★</span> 5.0</div>
+
         </div>
         <button class="add">В корзину</button>
+
       </div>
     </div>
 
-    <!-- Card 4 -->
-    <div class="card">
+
+    <div class="card" data-price="12990" data-name="Кофемашина Espresso Mini" data-emoji="☕">
+
       <div class="card-img" style="background:#FFF3D8;">
         <button class="fav">🤍</button>
         ☕
       </div>
+
       <div class="card-body">
         <div class="card-cat">Кухня</div>
         <div class="card-name">Кофемашина Espresso Mini</div>
+
         <div class="card-row">
           <div><span class="card-price">12 990 ₽</span></div>
           <div class="card-stars"><span class="s">★★★★☆</span> 4.6</div>
         </div>
+
         <button class="add">В корзину</button>
+
       </div>
     </div>
 
-    <!-- Card 5 -->
-    <div class="card">
+
+    <div class="card" data-price="8400" data-name="Экшн-камера Compact 4K" data-emoji="📷">
+
       <div class="card-img" style="background:#D8EEF4;">
         <div class="card-badge">−35%</div>
         <button class="fav">🤍</button>
         📷
       </div>
+
       <div class="card-body">
         <div class="card-cat">Электроника</div>
         <div class="card-name">Экшн-камера Compact 4K</div>
         <div class="card-row">
+
           <div>
             <span class="card-price">8 400 ₽</span>
             <span class="card-old">12 900 ₽</span>
           </div>
+
           <div class="card-stars"><span class="s">★★★★★</span> 4.8</div>
+
         </div>
         <button class="add">В корзину</button>
+
       </div>
     </div>
 
-    <!-- Card 6 -->
-    <div class="card">
+
+    <div class="card" data-price="1290" data-name="Аромасвечи «Лаванда»" data-emoji="️️🕯️">
+
       <div class="card-img" style="background:#F5E6EC;">
         <button class="fav">🤍</button>
         🕯️
       </div>
+
       <div class="card-body">
         <div class="card-cat">Красота</div>
         <div class="card-name">Аромасвечи «Лаванда»</div>
+
         <div class="card-row">
           <div><span class="card-price">1 290 ₽</span></div>
           <div class="card-stars"><span class="s">★★★★★</span> 4.9</div>
         </div>
+
         <button class="add">В корзину</button>
+
       </div>
     </div>
 
-    <!-- Card 7 -->
-    <div class="card">
+
+    <div class="card" data-price="4199" data-name="Геймпад Wireless Pro" data-emoji="🎮">
       <div class="card-img" style="background:#E6EEF8;">
         <button class="fav on">❤️</button>
         🎮
       </div>
+
       <div class="card-body">
         <div class="card-cat">Игры</div>
         <div class="card-name">Геймпад Wireless Pro</div>
         <div class="card-row">
+
           <div>
             <span class="card-price">4 199 ₽</span>
             <span class="card-old">5 500 ₽</span>
           </div>
+
           <div class="card-stars"><span class="s">★★★★☆</span> 4.5</div>
+
         </div>
         <button class="add">В корзину</button>
+
       </div>
     </div>
 
-    <!-- Card 8 -->
-    <div class="card">
+
+    <div class="card" data-price="749" data-name="«Атомные привычки» Д. Клир" data-emoji="📗">
+
       <div class="card-img" style="background:#EEFAF0;">
         <div class="card-badge">Новинка</div>
         <button class="fav">🤍</button>
         📗
       </div>
+
       <div class="card-body">
         <div class="card-cat">Книги</div>
         <div class="card-name">«Атомные привычки» Д. Клир</div>
+
         <div class="card-row">
           <div><span class="card-price">749 ₽</span></div>
           <div class="card-stars"><span class="s">★★★★★</span> 5.0</div>
         </div>
+
         <button class="add">В корзину</button>
+
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ── PROMO BANNER ── -->
+
 <div class="promo-banner">
   <div class="promo-inner">
+
     <div class="promo-text">
       <h2>Начни продавать<br>на Marea сегодня</h2>
       <p>Более 2 миллионов покупателей ждут ваши товары. Регистрация бесплатна — первые 3 месяца без комиссии.</p>
     </div>
+
     <div class="promo-action">
       <button class="promo-btn">Открыть магазин</button>
       <span class="promo-note">Бесплатно · Без скрытых платежей</span>
     </div>
+
   </div>
 </div>
 
-<!-- ── FOOTER ── -->
+
 <footer>
   <div class="footer-grid">
+
     <div class="footer-brand">
       <a href="#" class="logo">Mare<span class="dot">a</span></a>
       <p>Маркетплейс для тех, кто ценит качество и стиль. Более 500 000 товаров от проверенных продавцов.</p>
@@ -946,50 +1120,114 @@
       <a href="#">Условия использования</a>
       <a href="#">Политика конфиденциальности</a>
     </div>
+
   </div>
 
   <div class="footer-bottom">
-    <span>© 2025 Marea. Все права защищены.</span>
+    <span>© 2026 Marea. Все права защищены.</span>
     <span>Сделано с ❤️ в России</span>
   </div>
+
 </footer>
 
 <script>
-  // Category pills toggle
-  document.querySelectorAll('.cat-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
 
-  // Filter chips toggle
-  document.querySelectorAll('.chip').forEach(btn => {
+document.querySelectorAll('.cat-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
+
+document.querySelectorAll('.chip').forEach(btn => {
     btn.addEventListener('click', () => btn.classList.toggle('on'));
-  });
+});
 
-  // Fav toggle
-  document.querySelectorAll('.fav').forEach(btn => {
+document.querySelectorAll('.fav').forEach(btn => {
     btn.addEventListener('click', e => {
-      e.stopPropagation();
-      btn.classList.toggle('on');
-      btn.textContent = btn.classList.contains('on') ? '❤️' : '🤍';
+        e.stopPropagation();
+        btn.classList.toggle('on');
+        btn.textContent = btn.classList.contains('on') ? '❤️' : '🤍';
     });
-  });
+});
 
-  // Add to cart
-  document.querySelectorAll('.add').forEach(btn => {
+document.querySelectorAll('.add').forEach(btn => {
     btn.addEventListener('click', () => {
-      btn.textContent = '✓ Добавлено';
-      btn.style.background = 'var(--accent)';
-      btn.style.color = '#fff';
-      setTimeout(() => {
-        btn.textContent = 'В корзину';
-        btn.style.background = '';
-        btn.style.color = '';
-      }, 1500);
+        const card = btn.closest('.card');
+        const name = card.dataset.name;
+        const price = +card.dataset.price;
+        const emoji = card.dataset.emoji;
+
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const existing = cart.find(i => i.name === name);
+        if (existing) {
+            existing.qty += 1;
+        }
+
+        else {
+            cart.push({ name, price, emoji, qty: 1 });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartBadge();
+
+        btn.textContent = '✓ Добавлено';
+        btn.style.background = 'var(--accent)';
+        btn.style.color = '#fff';
+
+        setTimeout(() => {
+            btn.textContent = 'В корзину';
+            btn.style.background = '';
+            btn.style.color = '';
+        }, 1500);
     });
-  });
+});
+
+function updateCartBadge() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const total = cart.reduce((sum, i) => sum + i.qty, 0);
+    const badge = document.querySelector('.badge');
+    if (badge) badge.textContent = total;
+}
+
+updateCartBadge();
+
+const authArea = document.getElementById("auth-area");
+async function initAuth() {
+    try {
+        const res = await fetch('/auth/me');
+        if (!res.ok) throw new Error();
+
+        const data = await res.json();
+        const letter = data.user.charAt(0).toUpperCase();
+
+        authArea.innerHTML = `
+        <div class="profile-wrap">
+            <div class="profile-avatar">${letter}</div>
+            <div class="profile-menu">
+                <div class="profile-name">${data.user}</div>
+                <a href="/account_page">Профиль</a>
+                <a href="/orders">Мои заказы</a>
+                <a href="#" onclick="logout()">Выйти</a>
+            </div>
+        </div>
+        <a class="btn-primary" href="/sell">Продавать</a>`;
+    }
+
+    catch {
+        authArea.innerHTML = `
+            <a class="auth-btn" href="/login">Войти</a>
+            <a class="btn-primary" href="/registration">Продавать</a>`;
+    }
+}
+
+async function logout() {
+    await fetch('/auth/logout', { method: 'POST' });
+    window.location.href = '/';
+}
+
+initAuth();
+
 </script>
 
 </body>
