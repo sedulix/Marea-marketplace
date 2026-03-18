@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marea — Добавить товар</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style/sell.css">
+<script src="/static/script/sell.js" defer></script>
+
+
+</head>
+<body>
+
+<nav>
+  <div class="nav-wrap">
+    <a href="/" class="logo">Mare<span class="dot">a</span></a>
+    <div class="nav-links">
+      <a href="http://127.0.0.1:8000/home">Главная</a>
+      <a href="http://127.0.0.1:8000/catalog">Каталог</a>
+      <a href="http://127.0.0.1:8000/actions">Акции</a>
+      <a href="http://127.0.0.1:8000/delivery">Доставка</a>
+      <a href="#" class="active">Продавать</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="form-box">
+
+    <div id="form-view">
+      <h1>Добавить товар</h1>
+      <p class="subtitle">Заполните название и описание — мы опубликуем товар в каталоге</p>
+
+      <div class="field">
+        <label>
+          Название
+          <span class="counter" id="name-count">0 / 100</span>
+        </label>
+        <input
+          type="text"
+          id="name"
+          maxlength="100"
+          placeholder="Например: Беспроводные наушники Pro"
+          oninput="count('name','name-count',100); clear('name')"
+        >
+        <div class="err-msg" id="name-err">Введите название товара</div>
+      </div>
+
+      <div class="field">
+        <label>
+          Описание
+          <span class="counter" id="desc-count">0 / 500</span>
+        </label>
+        <textarea
+          id="desc"
+          maxlength="500"
+          placeholder="Расскажите о товаре: материал, размеры, особенности..."
+          oninput="count('desc','desc-count',500); clear('desc')"
+        ></textarea>
+        <div class="err-msg" id="desc-err">Добавьте описание товара</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-cancel">Отмена</button>
+        <button class="btn-submit" onclick="submit()">Добавить товар →</button>
+      </div>
+    </div>
+
+    <div class="success" id="success-view">
+      <div class="success-icon">🎉</div>
+      <h2>Товар добавлен!</h2>
+      <p id="success-text"></p>
+      <button class="btn-again" onclick="reset()">Добавить ещё один</button>
+    </div>
+
+  </div>
+</div>
+
+
+</body>
+</html>

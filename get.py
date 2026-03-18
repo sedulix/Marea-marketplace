@@ -1,4 +1,5 @@
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from starlette.requests import Request
 from fastapi import FastAPI
 
@@ -6,15 +7,16 @@ from backend.auth import registration, login, logout, auth_me
 from backend.sell_process import sell
 
 
-templates = Jinja2Templates(directory="frontend")
-
-
+templates = Jinja2Templates(directory="frontend/markup")
 app = FastAPI()
+
 app.include_router(registration.router)
 app.include_router(login.router)
 app.include_router(logout.router)
 app.include_router(auth_me.router)
 app.include_router(sell.router)
+
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 
 @app.get("/")
