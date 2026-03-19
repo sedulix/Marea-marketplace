@@ -41,7 +41,7 @@ Passlib
 
 ## ⚡ Запуск проекта
 ```bash
-git clone https://github.com/your-username/marea.git
+git clone https://github.com/FunnyBird12/marea.git
 cd marea
 
 python -m venv venv
