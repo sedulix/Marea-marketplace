@@ -23,9 +23,9 @@ Marea — это веб-маркетплейс, в котором реализо
 
 ## ⚙️ Технологии
 Frontend
-HTML / CSS / JavaScript
+HTML / CSS / JavaScript<br>
 Backend
-Python / FastAPI / SQLAlchemy / Pydantic / Passlib
+Python / FastAPI / SQLAlchemy / Pydantic / Passlib<br>
 Database
 PostgreSQL
 
