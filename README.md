@@ -40,6 +40,7 @@ pip install -r requirements.txt
 
 uvicorn main:app --reload
 ```
+
 ---
 
 ## 👨‍💻 Авторы
@@ -48,6 +49,7 @@ uvicorn main:app --reload
 github.com/FunnyBird12 <br>
 github.com/sedulix <br>
 
+---
 
 ## 📌 Примечание
 Проект демонстрирует практическое применение современного стека веб-разработки и может служить основой для более сложных систем.
