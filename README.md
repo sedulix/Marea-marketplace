@@ -28,14 +28,6 @@ Database: PostgreSQL
 
 ---
 
-## 📦 Модули
-FastAPI
-SQLAlchemy
-Pydantic
-Passlib
-
----
-
 ## 🔧 Запуск проекта
 ```bash
 git clone https://github.com/FunnyBird12/marea.git
