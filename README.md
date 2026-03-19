@@ -1,4 +1,4 @@
-## 🌊 Marea
+## 🛍 Marea
 <p align="center"> Современный онлайн маркетплейс с удобным интерфейсом и функциональным backend'ом </p> <p align="center"> <img src="https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi"> <img src="https://img.shields.io/badge/Database-PostgreSQL-336791?style=for-the-badge&logo=postgresql"> <img src="https://img.shields.io/badge/ORM-SQLAlchemy-red?style=for-the-badge"> <img src="https://img.shields.io/badge/Validation-Pydantic-yellow?style=for-the-badge"> <img src="https://img.shields.io/badge/Auth-Passlib-blue?style=for-the-badge"> </p>
 
 ---
@@ -10,13 +10,13 @@ Marea — это веб-маркетплейс, в котором реализо
 
 ## ✨ Возможности
 
-🔐 Регистрация пользователей
+🔐 Регистрация пользователей <br>
 Создание полноценного аккаунта с сохранением в базе данных
 
-🛒 Корзина товаров
+🛒 Корзина товаров <br>
 Добавление, удаление и управление товарами
 
-🔍 Поиск товаров
+🔍 Поиск товаров <br>
 Быстрый поиск по доступным позициям
 
 ---
